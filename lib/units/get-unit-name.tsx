@@ -1,6 +1,5 @@
 import { aoeDataInternal } from "../db/aoe-data";
 import { unitsInternal } from "../db/units-internals";
-import type { Unit } from "./type";
 
 export function getUnitName(unit: string, language: string = "es"): string {
   const unitName = unitsInternal[unit as keyof typeof unitsInternal];
@@ -30,7 +29,7 @@ export function getUnitName(unit: string, language: string = "es"): string {
 
 function importTranslations(language: string): Record<string, string> {
   try {
-    return require(`./translations/${language}/strings.json`);
+    return require(`./translations/${language}/strings.json`); // eslint-disable-line
   } catch {
     throw new Error(`Translations for language "${language}" not found`);
   }

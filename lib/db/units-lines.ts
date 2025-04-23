@@ -1,5 +1,3 @@
-import { unitLineIds } from "./units-ids";
-
 export const unitLines: unitLinesType = {
   Ghulam: {
     units: ["Ghulam", "EliteGhulam"],

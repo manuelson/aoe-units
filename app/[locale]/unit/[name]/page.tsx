@@ -21,7 +21,7 @@ interface UnitPageProps {
   };
 }
 
-export default function UnitPage({ params }: UnitPageProps) {
+export default function UnitPage({ params }: Promise<UnitPageProps>) {
   const { name } = use(params);
   const t = useTranslations();
   const locale = useLocale();

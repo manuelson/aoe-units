@@ -1,13 +1,11 @@
 "use client";
 
 import { useSearchHistory } from "@/context/search-history";
-import { useTranslations } from "next-intl";
 import { AvatarUi } from "./avatar-ui";
 import Link from "next/link";
 
 export function SearchHistory() {
   const { history } = useSearchHistory();
-  const t = useTranslations();
 
   if (history.length === 0) return null;
 
