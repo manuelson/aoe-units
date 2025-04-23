@@ -1,13 +1,12 @@
 "use client";
 import { useLocale, useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ArrowDownRight } from "lucide-react";
 import { SearchBar } from "@/components/search-bar";
 import { useAoeDataById } from "@/data/useAoeData";
-import { use } from "react";
 import { AvatarUi } from "@/components/avatar-ui";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
@@ -15,14 +14,8 @@ import { getUnitNameLine } from "@/lib/units/get-units-from-line";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 
-interface UnitPageProps {
-  params: {
-    name: string;
-  };
-}
-
-export default function UnitPage({ params }: Promise<UnitPageProps>) {
-  const { name } = use(params);
+export default function PageUnit() {
+  const { name } = useParams<{ name: string }>();
   const t = useTranslations();
   const locale = useLocale();
 
