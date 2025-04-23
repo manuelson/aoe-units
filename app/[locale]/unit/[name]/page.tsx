@@ -28,7 +28,7 @@ export default function PageUnit() {
   return (
     <main className="flex flex-col justify-between items-center pt-5">
       <div className="w-full max-w-4xl space-y-8 px-4 flex justify-between">
-        <Link href="/" className="flex items-center justify-between">
+        <Link href={`/${locale}`} className="flex items-center justify-between">
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
             {t("title")}
           </h1>
