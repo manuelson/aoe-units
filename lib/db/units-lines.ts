@@ -2693,7 +2693,7 @@ export const unitLines: unitLinesType = {
   FireLancer: {
     units: ["FireLancer", "EliteFireLancer"],
     unique: false,
-    counteredBy: [],
+    counteredBy: ["HandCannoneer", "Condottiero"],
     upgrades: [],
   },
   RocketCart: {
