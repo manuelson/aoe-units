@@ -1,7 +1,7 @@
 import { unitLines } from "../db/units-lines";
 import type { Unit, UnitLine } from "./type";
 
-export function getUnitsFromLine(line: string): Unit[] {
+export function getUnitsFromLine(line: string): Unit {
   const unitLine = unitLines[line] as UnitLine;
 
   if (!unitLine) {
@@ -21,7 +21,7 @@ export function getUnitsFromLines(line: string[]): Unit[] {
       return;
     }
 
-    units.push(...unitLine.units);
+    units.push(unitLine.units);
   });
   return units;
 }

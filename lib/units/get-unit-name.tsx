@@ -9,7 +9,9 @@ export function getUnitName(unit: string, language: string = "es"): string {
   }
 
   const unitDataId =
-    aoeDataInternal.data.units[unitName.dataId]?.LanguageNameId;
+    aoeDataInternal.data.units[
+      unitName.dataId as keyof typeof aoeDataInternal.data.units
+    ]?.LanguageNameId;
 
   if (!unitDataId) {
     return "Unit data not found";
