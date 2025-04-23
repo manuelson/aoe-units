@@ -107,7 +107,7 @@ export default function PageUnit() {
                         lines.counters.map((counter) => (
                           <Avatar
                             key={counter}
-                            className="dark:ring-gray-800 h-15 w-15 transition-transform duration-200 ease-in-out hover:scale-110 hover:z-10"
+                            className="dark:ring-gray-800 md:w-15 md:h-15 w-10 h-10 transition-transform duration-200 ease-in-out hover:scale-110 hover:z-10"
                           >
                             <AvatarImage
                               src={`/units/${counter}.png`}
