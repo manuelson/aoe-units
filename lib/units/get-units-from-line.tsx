@@ -24,7 +24,7 @@ export function getUnitsFromLine(unitLine: string) {
 export function getCounters(unitLine: string) {
   const units = unitLines[unitLine as keyof typeof unitLines];
 
-  if (units.counteredBy && units.counteredBy.length > 1) {
+  if (units.counteredBy && units.counteredBy.length > 0) {
     return units.counteredBy;
   }
 

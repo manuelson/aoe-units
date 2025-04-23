@@ -93,4 +93,9 @@ export const unitLineIds = [
   "CompositeBowman",
   "Monaspa",
   "WarriorPriest",
+  /** news on new patch */
+  "DragonShip",
+  "FireLancer",
+  "RocketCart",
+  "LouChuan",
 ] as Unit;

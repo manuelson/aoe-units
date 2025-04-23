@@ -2683,6 +2683,31 @@ export const unitLines: unitLinesType = {
       "Stronghold-Infantry",
     ],
   },
+  DragonShip: {
+    units: ["DragonShip"],
+    unique: true,
+    civ: "Chinese",
+    counteredBy: ["DemolitionShip", "TurtleShip", "Longboat"],
+    upgrades: [],
+  },
+  FireLancer: {
+    units: ["FireLancer", "EliteFireLancer"],
+    unique: false,
+    counteredBy: [],
+    upgrades: [],
+  },
+  RocketCart: {
+    units: ["RocketCart", "HeavyRocketCart"],
+    unique: false,
+    counteredBy: ["Condottiero", "WingedHussar"],
+    upgrades: [],
+  },
+  LouChuan: {
+    units: ["LouChuan"],
+    unique: false,
+    counteredBy: ["FireShip"],
+    upgrades: [],
+  },
 };
 
 export type unitLinesType = {

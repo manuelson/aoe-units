@@ -5,7 +5,7 @@ export function getUnitName(unit: string, language: string = "es"): string {
   const unitName = unitsInternal[unit as keyof typeof unitsInternal];
 
   if (!unitName) {
-    return "Unit not found";
+    return unit;
   }
 
   const unitDataId =
@@ -14,7 +14,7 @@ export function getUnitName(unit: string, language: string = "es"): string {
     ]?.LanguageNameId;
 
   if (!unitDataId) {
-    return "Unit data not found";
+    return unit;
   }
 
   try {
