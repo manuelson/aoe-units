@@ -14,9 +14,9 @@ const SearchHistoryContext = createContext<
 >(undefined);
 
 export function SearchHistoryProvider({ children }: { children: ReactNode }) {
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<Suggestion[]>([]);
 
-  const addToHistory = (query: string) => {
+  const addToHistory = (query: Suggestion) => {
     setHistory((prev) => {
       // Remove if already exists to avoid duplicates
       const filtered = prev.filter((item) => item.name !== query.name);
