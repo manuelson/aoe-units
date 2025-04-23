@@ -4,6 +4,7 @@ import { NextIntlClientProvider, useLocale } from "next-intl";
 import type { Metadata } from "next";
 import "../globals.css";
 import { SearchHistoryProvider } from "@/context/search-history";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SearchHistoryProvider>{children}</SearchHistoryProvider>
+            <SearchHistoryProvider>
+              {children}
+              <Analytics />
+            </SearchHistoryProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
