@@ -26,7 +26,7 @@ export function SearchHistory() {
           >
             {history.map(({ name, avatar, units }, index) => (
               <li className="py-3 sm:py-4" key={`${name}-${index}`}>
-                <Link href={`/unit/${name}`}>
+                <Link href={`/unit/${avatar}`}>
                   <div className="flex items-center">
                     <div className="shrink-0">
                       <AvatarUi name={name} avatar={avatar} />

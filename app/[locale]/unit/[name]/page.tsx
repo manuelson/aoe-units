@@ -53,7 +53,6 @@ export default function UnitPage({ params }: UnitPageProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <AvatarUi name={unit.name} avatar={unit.avatar} />
-
             <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               {unit.name}
             </h1>
