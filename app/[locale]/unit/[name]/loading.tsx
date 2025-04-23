@@ -14,6 +14,10 @@ export default function Loading() {
         </div>
       </div>
       <div className="w-full max-w-4xl space-y-8 px-4">
+        <div>
+          <Skeleton className="w-full h-[60px] rounded-2" />
+        </div>
+
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Skeleton className="h-12 w-12 rounded-full" />
@@ -23,11 +27,6 @@ export default function Loading() {
             </h1>
           </div>
         </div>
-
-        <div>
-          <Skeleton className="w-full h-[60px] rounded-2" />
-        </div>
-
         <div>
           <Skeleton className="w-full h-[150px] rounded-2" />
         </div>
