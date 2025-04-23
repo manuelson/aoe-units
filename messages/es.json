@@ -1,0 +1,23 @@
+{
+  "title": "AoeUnits",
+  "description": "Busca y descubre información sobre las unidades de Age of Empires II",
+  "searchPlaceholder": "Buscar unidades...",
+  "searchButton": "Buscar",
+  "footer": "Made with love {year} AoeUnits.com",
+  "unit": {
+    "stats": "Estadísticas",
+    "attack": "Ataque",
+    "defense": "Defensa",
+    "hp": "PV",
+    "cost": "Coste",
+    "food": "Comida",
+    "wood": "Madera",
+    "gold": "Oro",
+    "counters": "Malo contra",
+    "strongAgainst": "Fuerte contra"
+  },
+  "line": "línea",
+  "searchHistory": {
+    "title": "Búsquedas recientes"
+  }
+}
