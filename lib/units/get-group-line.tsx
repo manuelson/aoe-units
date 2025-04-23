@@ -4,7 +4,8 @@ export const getGroupLine = (
   unitsIds: { units: string[]; civ: string }[],
   locale = "en"
 ) => {
-  const result = [];
+  const result: Array<Array<{ name: string; avatar: string; civ: string }>> =
+    [];
 
   unitsIds.map((units) => {
     result.push(
