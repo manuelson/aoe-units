@@ -33,6 +33,8 @@ export const metadata: Metadata = {
     "units counter units",
     "units counter",
     "units counter units",
+    "aoeunits",
+    "aoeunits.com",
   ],
   robots: {
     index: true,
