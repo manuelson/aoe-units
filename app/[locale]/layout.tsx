@@ -10,7 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Aoe units",
-  description: "Search and discover Age of Empires II units",
+  description: "Search and discover Age of Empires II counter units",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
