@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const unitName = getUnitName(name, locale);
 
   return {
-    title: `AoeUnits | ${getUnitNameLine(unitName, locale)}`,
+    title: `AoeUnits | ${getUnitNameLine(unitName, locale)} counter units`,
     description: `${getUnitNameLine(unitName, locale)} counter units`,
   };
 }

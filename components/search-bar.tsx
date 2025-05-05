@@ -39,7 +39,6 @@ export function SearchBar({ placeholder = "Search units..." }: SearchBarProps) {
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  console.log(suggestions);
   const { addToHistory } = useSearchHistory();
 
   const [query, setQuery] = useState("");

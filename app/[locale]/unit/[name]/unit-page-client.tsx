@@ -10,7 +10,10 @@ import { useAoeDataById } from "@/data/useAoeData";
 import { AvatarUi } from "@/components/avatar-ui";
 import { Footer } from "@/components/footer";
 import Link from "next/link";
-import { getUnitNameLine } from "@/lib/units/get-units-from-line";
+import {
+  getUnitNameLine,
+  getUnitsFromLine,
+} from "@/lib/units/get-units-from-line";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 
@@ -42,13 +45,21 @@ export default function UnitPageClient() {
         <div>
           <SearchBar placeholder={t("searchPlaceholder")} />
         </div>
-        <div className="flex justify-between items-center">
+        <div>
           <div className="flex items-center gap-2">
             <AvatarUi name={unit.name} avatar={unit.avatar} />
             <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               {unit.name} - {t("counter-units")}
             </h1>
           </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            {getUnitsFromLine(unit.avatar).map((unit, index, array) => (
+              <span key={unit}>
+                {getUnitNameLine(unit, locale)}
+                {index < array.length - 1 ? " - " : ""}
+              </span>
+            ))}
+          </p>
         </div>
         <div>
           {/* Counters Card */}
