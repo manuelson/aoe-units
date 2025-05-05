@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aoe units",
+  title: "Aoe units: find the best counter units in Age of Empires II",
   description: "Search and discover Age of Empires II counter units",
   icons: {
     icon: "/icon.png",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   creator: "AoeUnits",
   publisher: "AoeUnits",
   openGraph: {
-    title: "AoeUnits",
+    title: "AoeUnits: find the best counter units in Age of Empires II",
     description: "Search and discover Age of Empires II counter units",
     url: "https://aoeunits.com",
     siteName: "AoeUnits",
