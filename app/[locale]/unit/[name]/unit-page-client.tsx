@@ -53,12 +53,15 @@ export default function UnitPageClient() {
             </h1>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            {getUnitsFromLine(unit.avatar).map((unit, index, array) => (
-              <span key={unit}>
-                {getUnitNameLine(unit, locale)}
-                {index < array.length - 1 ? " - " : ""}
-              </span>
-            ))}
+            {getUnitsFromLine(unit.avatar).map(
+              (unit, index, array) =>
+                array.length > 1 && (
+                  <span key={unit}>
+                    {getUnitNameLine(unit, locale)}
+                    {index < array.length - 1 ? " - " : ""}
+                  </span>
+                )
+            )}
           </p>
         </div>
         <div>
