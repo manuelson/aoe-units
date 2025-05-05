@@ -4,12 +4,12 @@ import UnitPageClient from "./unit-page-client";
 import { getUnitNameLine } from "@/lib/units/get-units-from-line";
 
 type Props = {
-  params: { name: string; locale: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ name: string; locale: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { name, locale } = await Promise.resolve(params);
+  const { name, locale } = await params;
   const unitName = getUnitName(name, locale);
 
   return {
