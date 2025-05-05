@@ -7,7 +7,7 @@ import { ThemeToggle } from "./theme-toggle";
 export const Header = () => {
   const t = useTranslations();
   return (
-    <div className="max-w-4xl space-y-8 px-4">
+    <section className="max-w-4xl space-y-8 px-4">
       <div className="w-full max-w-2xl space-y-8 text-center">
         <div className="flex justify-end gap-2">
           <LanguageToggle />
@@ -20,6 +20,6 @@ export const Header = () => {
         <SearchBar placeholder={t("searchPlaceholder")} />
       </div>
       <SearchHistory />
-    </div>
+    </section>
   );
 };

@@ -1,6 +1,6 @@
 {
   "title": "AoeUnits",
-  "description": "Find out which unit is the best opponent in Age Of Empires II",
+  "description": "Find out which unit is the best counter in Age Of Empires II",
   "searchPlaceholder": "Search units...",
   "searchButton": "Search",
   "footer": "Made with love {year} AoeUnits.com",
@@ -16,6 +16,7 @@
     "counters": "Counters Units",
     "strongAgainst": "Strong Against"
   },
+  "counter-units": "counter units",
   "line": "line",
   "searchHistory": {
     "title": "Recent Searches"

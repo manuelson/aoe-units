@@ -26,12 +26,12 @@ export default function UnitPageClient() {
   }
 
   return (
-    <main className="flex flex-col justify-between items-center pt-5">
+    <section className="flex flex-col justify-between items-center pt-5">
       <div className="w-full max-w-4xl space-y-8 px-4 flex justify-between">
         <Link href={`/${locale}`} className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+          <div className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
             {t("title")}
-          </h1>
+          </div>
         </Link>
         <div className="flex gap-2">
           <LanguageToggle />
@@ -42,16 +42,14 @@ export default function UnitPageClient() {
         <div>
           <SearchBar placeholder={t("searchPlaceholder")} />
         </div>
-
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <AvatarUi name={unit.name} avatar={unit.avatar} />
             <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              {unit.name}
+              {unit.name} - {t("counter-units")}
             </h1>
           </div>
         </div>
-
         <div>
           {/* Counters Card */}
           <Card className="bg-card/50 backdrop-blur-sm border-border/50">
@@ -127,6 +125,6 @@ export default function UnitPageClient() {
         </div>
       </div>
       <Footer />
-    </main>
+    </section>
   );
 }
