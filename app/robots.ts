@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "http://aoeunits.com/sitemap.xml",
+    sitemap: "https://aoeunits.com/sitemap.xml",
   };
 }
