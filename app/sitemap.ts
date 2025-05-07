@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return suggestions.map((suggestion) => ({
-    url: `http://aoeunits.com/unit/${suggestion.id}`,
+    url: `https://aoeunits.com/unit/${suggestion.id}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.8,
