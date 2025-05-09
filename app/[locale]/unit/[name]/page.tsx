@@ -1,14 +1,20 @@
 import { Metadata } from "next";
 import { getUnitName } from "@/lib/units/get-unit-name";
-import UnitPageClient from "./unit-page-client";
+import UnitPage from "./unit-page";
 import { getUnitNameLine } from "@/lib/units/get-units-from-line";
+import { Suspense } from "react";
+import Loading from "./loading";
 
-type Props = {
-  params: Promise<{ name: string; locale: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
+interface PageProps {
+  params: Promise<{
+    name: string;
+    locale: string;
+  }>;
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { name, locale } = await params;
   const unitName = getUnitName(name, locale);
 
@@ -18,6 +24,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function PageUnit() {
-  return <UnitPageClient />;
+export default async function Page({ params }: PageProps) {
+  const resolvedParams = await params;
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <UnitPage params={resolvedParams} />
+    </Suspense>
+  );
 }
