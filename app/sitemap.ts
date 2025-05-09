@@ -23,11 +23,9 @@ function getAoeData(locale = "en") {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locale = "en";
   // take only with counters
-  const suggestions = getAoeData(locale)
-    .filter(
-      (suggestion) => suggestion.counters && suggestion.counters.length > 0
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const suggestions = getAoeData(locale).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return suggestions.map((suggestion) => ({
     url: `https://aoeunits.com/unit/${suggestion.id}`,
