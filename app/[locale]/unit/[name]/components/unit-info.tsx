@@ -20,7 +20,7 @@ export function UnitInfo({ unit }: UnitInfoProps) {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <AvatarUi name={unit.name} avatar={unit.avatar} />
+        <AvatarUi name={unit.name} avatar={unit.avatar} w="w-15" h="h-15" />
         <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
           {unit.name} - {t("counter-units")}
         </h1>

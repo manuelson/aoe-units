@@ -18,7 +18,7 @@ export function CounterUnits({ counterLines }: CounterUnitsProps) {
   const t = useTranslations();
   const locale = useLocale();
 
-  return (
+  return counterLines.length > 0 ? (
     <Card className="bg-card/50 backdrop-blur-sm border-border/50">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-destructive">
@@ -89,5 +89,7 @@ export function CounterUnits({ counterLines }: CounterUnitsProps) {
         </div>
       </CardContent>
     </Card>
+  ) : (
+    <div></div>
   );
 }
