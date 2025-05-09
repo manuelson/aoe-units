@@ -33,11 +33,9 @@ const normalizeText = (text: string): string => {
 export function SearchBar({ placeholder = "Search units..." }: SearchBarProps) {
   const locale = useLocale();
   // take only with counters
-  const suggestions = useAoeData(locale)
-    .filter(
-      (suggestion) => suggestion.counters && suggestion.counters.length > 0
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const suggestions = useAoeData(locale).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   const { addToHistory } = useSearchHistory();
 

@@ -1,4 +1,89 @@
 export const unitsInternal = {
+  FireLancer: {
+    dataId: "1901",
+  },
+  EliteFireLancer: {
+    dataId: "1903",
+  },
+  RocketCart: {
+    dataId: "1904",
+  },
+  HeavyRocketCart: {
+    dataId: "1907",
+  },
+  LouChuan: {
+    dataId: "1948",
+  },
+
+  IronPagoda: {
+    dataId: "1908",
+  },
+  EliteIronPagoda: {
+    dataId: "1910",
+  },
+  LiaoDao: {
+    dataId: "1920",
+  },
+  EliteLiaoDao: {
+    dataId: "1922",
+  },
+  WhiteFeatherGuard: {
+    dataId: "1959",
+  },
+  EliteWhiteFeatherGuard: {
+    dataId: "1961",
+  },
+  TigerCavalry: {
+    dataId: "1949",
+  },
+  EliteTigerCavalry: {
+    dataId: "1951",
+  },
+  HeiGuangCavalry: {
+    dataId: "1944",
+  },
+  HeavyHeiGuangCavalry: {
+    dataId: "1946",
+  },
+  FireArcher: {
+    dataId: "1968",
+  },
+  EliteFireArcher: {
+    dataId: "1970",
+  },
+
+  Grenadier: {
+    dataId: "1911",
+  },
+  MountedTrebuchet: {
+    dataId: "1923",
+  },
+  TractionTrebuchet: {
+    dataId: "1942",
+  },
+  WarChariot: {
+    dataId: "1962",
+  },
+  XianbeiRaider: {
+    dataId: "1952",
+  },
+  JianSwordsman: {
+    dataId: "1974",
+  },
+  DragonShip: {
+    dataId: "1302",
+  },
+
+  LiuBei: {
+    dataId: "1966",
+  },
+  CaoCao: {
+    dataId: "1954",
+  },
+  SunJian: {
+    dataId: "1978",
+  },
+
   Savar: {
     dataId: "1813",
   },

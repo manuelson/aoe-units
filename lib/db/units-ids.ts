@@ -1,6 +1,25 @@
 import type { Unit } from "../units/type";
 
 export const unitLineIds = [
+  "FireLancer",
+  "RocketCart",
+  "LouChuan",
+  "IronPagoda",
+  "LiaoDao",
+  "WhiteFeatherGuard",
+  "TigerCavalry",
+  "HeiGuangCavalry",
+  "FireArcher",
+  "Grenadier",
+  "MountedTrebuchet",
+  "TractionTrebuchet",
+  "WarChariot",
+  "XianbeiRaider",
+  "JianSwordsman",
+  "DragonShip",
+  "LiuBei",
+  "CaoCao",
+  "SunJian",
   "Ghulam",
   "ShrivamshaRider",
   "ChakramThrower",
@@ -93,9 +112,4 @@ export const unitLineIds = [
   "CompositeBowman",
   "Monaspa",
   "WarriorPriest",
-  /** news on new patch */
-  "DragonShip",
-  "FireLancer",
-  "RocketCart",
-  "LouChuan",
 ] as Unit;
