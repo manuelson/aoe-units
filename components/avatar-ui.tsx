@@ -10,6 +10,7 @@ export const AvatarUi = ({
   return (
     <Avatar className="h-10 w-10 ring-2 ring-gray-100 dark:ring-gray-800">
       <AvatarImage
+        loading="lazy"
         src={`/units/${avatar}.png`}
         alt={name}
         className="bg-black"
