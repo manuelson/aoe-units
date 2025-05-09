@@ -11,7 +11,7 @@ export const Footer = () => {
             II counter units.
           </p>
           <p className="text-gray-400">
-            The website was created under Microsoft's{" "}
+            The website was created under Microsoft&apos;s{" "}
             <a
               className="underline"
               href="https://www.xbox.com/en-us/developers/rules"
