@@ -29,6 +29,10 @@ export function SearchHistoryProvider({ children }: { children: ReactNode }) {
       if (raw) {
         const parsed: unknown = JSON.parse(raw);
         if (Array.isArray(parsed)) {
+          // Same reason as theme-provider: localStorage is client-only, so this is a
+          // one-shot read after mount. Reading it during render would desync the
+          // server and client HTML.
+          // eslint-disable-next-line react-hooks/set-state-in-effect
           setHistory(
             parsed
               .filter(

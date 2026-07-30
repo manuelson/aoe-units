@@ -52,6 +52,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Storage blocked. Fall back to following the system.
     }
+    // localStorage does not exist during SSR, so the stored theme can only be read
+    // after mount. The inline script has already applied the class, so this sets no
+    // visible pixels; it only syncs React state for the toggle. Runs once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(stored);
     setResolved(apply(stored) ? "dark" : "light");
   }, []);
