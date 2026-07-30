@@ -3,24 +3,26 @@ import "./globals.css";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center px-4">
-        <h1 className="text-9xl font-bold text-gray-900 mb-4">404</h1>
-        <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4">
-          Page Not Found
-        </h2>
-        <p className="text-gray-600 mb-8 max-w-md mx-auto">
-          Oops! The page you&apos;re looking for seems to have vanished into
-          thin air.
-        </p>
-        <Link
-          href="/"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
-        >
-          Return Home
-        </Link>
-      </div>
-    </div>
+    <html lang="en">
+      <body className="bg-background text-foreground antialiased">
+        <main className="flex min-h-[100dvh] items-center justify-center px-4">
+          <div className="max-w-md text-center">
+            <p className="font-mono text-7xl font-semibold text-primary">404</p>
+            <h1 className="mt-6 text-2xl font-semibold tracking-tight">
+              That unit does not exist
+            </h1>
+            <p className="mt-2 text-muted-foreground">
+              The page may have moved, or the unit name is spelled differently.
+            </p>
+            <Link
+              href="/"
+              className="mt-8 inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Back to AoeUnits
+            </Link>
+          </div>
+        </main>
+      </body>
+    </html>
   );
 }

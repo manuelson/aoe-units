@@ -1,36 +1,27 @@
-import { getCounters, getUnitNameLine } from "@/lib/units/get-units-from-line";
-import { unitLineIds } from "@/lib/db/units-ids";
-import { getUnitName } from "@/lib/units/get-unit-name";
-import { getUnitsFromLine } from "@/lib/units/get-units";
 import type { MetadataRoute } from "next";
+import { getLineIds } from "@/lib/queries";
+import { routing } from "@/i18n/routing";
 
-function getAoeData(locale = "en") {
-  const finalData = [];
-  for (const unitLine of unitLineIds) {
-    finalData.push({
-      name: getUnitNameLine(unitLine, locale),
-      avatar: unitLine,
-      units: getUnitsFromLine(unitLine).map((unit) =>
-        getUnitName(unit, locale)
-      ),
-      counters: getCounters(unitLine),
-      id: unitLine,
-    });
-  }
-  return finalData;
-}
+const BASE = "https://aoeunits.com";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const locale = "en";
-  // take only with counters
-  const suggestions = getAoeData(locale).sort((a, b) =>
-    a.name.localeCompare(b.name)
+  const ids = await getLineIds();
+
+  const pages = routing.locales.flatMap((locale) => [
+    { url: `${BASE}/${locale}`, changeFrequency: "weekly" as const, priority: 1 },
+    { url: `${BASE}/${locale}/units`, changeFrequency: "weekly" as const, priority: 0.9 },
+  ]);
+
+  const units = routing.locales.flatMap((locale) =>
+    ids.map((id) => ({
+      url: `${BASE}/${locale}/unit/${id.toLowerCase()}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
   );
 
-  return suggestions.map((suggestion) => ({
-    url: `https://aoeunits.com/unit/${suggestion.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+  // /contribute and /admin are noindex, so they are deliberately absent.
+  return [...pages, ...units];
 }

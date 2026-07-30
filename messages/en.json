@@ -1,9 +1,51 @@
 {
   "title": "AoeUnits",
   "description": "Find out which unit is the best counter in Age Of Empires II",
-  "searchPlaceholder": "Search units...",
+  "searchPlaceholder": "Search any unit...",
   "searchButton": "Search",
   "footer": "Made with love {year} AoeUnits.com",
+  "hero": {
+    "headline": "Know what beats it before the fight starts.",
+    "sub": "Search any Age of Empires II unit and get its counters, what it beats, and its stats.",
+    "browse": "Browse all units",
+    "stat": "{lines} unit lines, {counters} counter matchups"
+  },
+  "triangle": {
+    "title": "The rule everything else bends around",
+    "body": "Spearmen beat cavalry, cavalry beats archers, archers beat spearmen. Unique units break this on purpose, which is why the rest of the site exists.",
+    "beats": "beats"
+  },
+  "browse": {
+    "title": "Every unit in the game",
+    "filterLabel": "Filter by name",
+    "filterPlaceholder": "Knight, Arbalester, Mangudai...",
+    "all": "All",
+    "allCivs": "All civilizations",
+    "civLabel": "Browse by civilization",
+    "count": "Showing {count} of {total}",
+    "counters": "{count, plural, =0 {no counters listed} one {# counter} other {# counters}}",
+    "emptyTitle": "Nothing matches those filters",
+    "emptyBody": "Try a different class, civilization, or spelling.",
+    "reset": "Clear filters",
+    "countCiv": "{count} unique units for {civ}"
+  },
+  "class": {
+    "Infantry": "Infantry",
+    "Archer": "Archer",
+    "Cavalry": "Cavalry",
+    "CavalryArcher": "Cavalry Archer",
+    "Siege": "Siege",
+    "Naval": "Naval",
+    "Monk": "Monk",
+    "Other": "Other"
+  },
+  "search": {
+    "empty": "No unit matches \"{query}\"",
+    "generic": "Generic units",
+    "unique": "Unique units",
+    "hintOpen": "to open",
+    "hintMove": "to move"
+  },
   "unit": {
     "stats": "Stats",
     "attack": "Attack",
@@ -13,12 +55,107 @@
     "food": "Food",
     "wood": "Wood",
     "gold": "Gold",
-    "counters": "Counters Units",
-    "strongAgainst": "Strong Against"
+    "stone": "Stone",
+    "meleeArmor": "Melee armor",
+    "pierceArmor": "Pierce armor",
+    "range": "Range",
+    "speed": "Speed",
+    "counters": "Countered by",
+    "countersHelp": "Build these against it.",
+    "strongAgainst": "Strong against",
+    "strongAgainstHelp": "This unit is a good answer to these.",
+    "line": "Upgrade line",
+    "unique": "Unique unit",
+    "noCounters": "No counters recorded yet",
+    "noCountersBody": "This unit has no counter data. If you know what beats it, add it.",
+    "noStrongAgainst": "Not listed as a counter to anything yet.",
+    "back": "All units",
+    "outOf": "out of"
   },
   "counter-units": "counter units",
   "line": "line",
   "searchHistory": {
-    "title": "Recent Searches"
+    "title": "Recently viewed",
+    "clear": "Clear"
+  },
+  "feedback": {
+    "question": "Is this counter list right?",
+    "yes": "Looks right",
+    "no": "Something is missing",
+    "thanks": "Thanks, recorded.",
+    "alreadyVoted": "You already voted on this one today.",
+    "error": "Could not send that. Try again.",
+    "suggestTitle": "What should counter {name}?",
+    "suggestLabel": "Pick the units that beat it",
+    "commentLabel": "Anything to add? (optional)",
+    "commentPlaceholder": "Only in Castle Age, needs numbers to work...",
+    "submit": "Send suggestion",
+    "sending": "Sending...",
+    "sent": "Suggestion sent. It will show up once reviewed.",
+    "statsTitle": "Wrong stats?",
+    "statsHelp": "Edit only the numbers that are off. Anything you leave alone stays as it is.",
+    "pickSomething": "Add a counter, remove one, or change a stat.",
+    "removeTitle": "Something here that does not belong?",
+    "removeHelp": "Tick anything listed that does not actually beat this unit."
+  },
+  "contribute": {
+    "title": "Add a counter",
+    "sub": "Spotted a matchup we are missing? Tell us and it goes into the review queue.",
+    "unitLabel": "Which unit needs a counter?",
+    "unitPlaceholder": "Choose a unit",
+    "back": "Back to all units",
+    "tabCounter": "Add a counter",
+    "tabUnit": "Add a new unit",
+    "tabReport": "Report something"
+  },
+  "admin": {
+    "title": "Review queue",
+    "password": "Password",
+    "signIn": "Sign in",
+    "wrongPassword": "Wrong password.",
+    "empty": "Nothing waiting for review.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "votes": "Votes",
+    "accurate": "accurate",
+    "inaccurate": "inaccurate",
+    "suggests": "suggests",
+    "counters": "counters",
+    "counterQueue": "Counter suggestions",
+    "statQueue": "Stat corrections",
+    "unitQueue": "New units",
+    "unitSummary": "{counters} counters, {stats} stats filled in",
+    "actionAdd": "add",
+    "actionRemove": "remove",
+    "reportQueue": "Reports",
+    "resolve": "Done",
+    "dismiss": "Dismiss"
+  },
+  "newUnit": {
+    "nameLabel": "Unit name",
+    "namePlaceholder": "Halberdier, Ghulam, Winged Hussar...",
+    "nameRequired": "Give the unit a name.",
+    "classLabel": "Class",
+    "civLabel": "Civilization",
+    "noCiv": "None or generic",
+    "uniqueLabel": "Unique unit",
+    "statsTitle": "Stats",
+    "statsHelp": "Fill in what you know. Empty fields are simply left blank.",
+    "countersLabel": "What beats it?",
+    "commentPlaceholder": "Where it comes from, which patch added it...",
+    "submit": "Send unit",
+    "sent": "Unit sent. It will appear on the site once reviewed."
+  },
+  "civs": {
+    "title": "Browse by civilization",
+    "sub": "Drag to explore. Pick one to see its units."
+  },
+  "report": {
+    "label": "What is wrong?",
+    "help": "Anything the other two tabs have no field for: a wrong name, a broken page, a missing image, an idea.",
+    "placeholder": "The Mangudai page shows the wrong portrait...",
+    "tooShort": "Write a bit more so it can be acted on.",
+    "submit": "Send report",
+    "sent": "Report sent. Thanks."
   }
 }

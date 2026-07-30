@@ -1,9 +1,51 @@
 {
   "title": "AoeUnits",
   "description": "Busca que unidad es mejor contrincante en Age Of Empires II",
-  "searchPlaceholder": "Buscar unidades...",
+  "searchPlaceholder": "Busca cualquier unidad...",
   "searchButton": "Buscar",
   "footer": "Made with love {year} AoeUnits.com",
+  "hero": {
+    "headline": "Sabe qué la mata antes de empezar la pelea.",
+    "sub": "Busca cualquier unidad de Age of Empires II y mira sus counters, a quién gana y sus stats.",
+    "browse": "Ver todas las unidades",
+    "stat": "{lines} líneas de unidad, {counters} enfrentamientos"
+  },
+  "triangle": {
+    "title": "La regla que lo ordena todo",
+    "body": "El lancero gana a la caballería, la caballería al arquero y el arquero al lancero. Las unidades únicas rompen esto a propósito, y por eso existe el resto de la web.",
+    "beats": "gana a"
+  },
+  "browse": {
+    "title": "Todas las unidades del juego",
+    "filterLabel": "Filtrar por nombre",
+    "filterPlaceholder": "Caballero, Arbalestero, Mangudai...",
+    "all": "Todas",
+    "allCivs": "Todas las civilizaciones",
+    "civLabel": "Explora por civilización",
+    "count": "Mostrando {count} de {total}",
+    "counters": "{count, plural, =0 {sin counters} one {# counter} other {# counters}}",
+    "emptyTitle": "Nada coincide con esos filtros",
+    "emptyBody": "Prueba con otra clase, otra civilización u otra grafía.",
+    "reset": "Quitar filtros",
+    "countCiv": "{count} unidades únicas de {civ}"
+  },
+  "class": {
+    "Infantry": "Infantería",
+    "Archer": "Arquero",
+    "Cavalry": "Caballería",
+    "CavalryArcher": "Arquero a caballo",
+    "Siege": "Asedio",
+    "Naval": "Naval",
+    "Monk": "Monje",
+    "Other": "Otras"
+  },
+  "search": {
+    "empty": "Ninguna unidad coincide con \"{query}\"",
+    "generic": "Unidades genéricas",
+    "unique": "Unidades únicas",
+    "hintOpen": "para abrir",
+    "hintMove": "para moverte"
+  },
   "unit": {
     "stats": "Estadísticas",
     "attack": "Ataque",
@@ -13,12 +55,107 @@
     "food": "Comida",
     "wood": "Madera",
     "gold": "Oro",
-    "counters": "Malo contra",
-    "strongAgainst": "Fuerte contra"
+    "stone": "Piedra",
+    "meleeArmor": "Armadura cuerpo a cuerpo",
+    "pierceArmor": "Armadura perforante",
+    "range": "Alcance",
+    "speed": "Velocidad",
+    "counters": "Le ganan",
+    "countersHelp": "Saca estas unidades contra ella.",
+    "strongAgainst": "Gana a",
+    "strongAgainstHelp": "Esta unidad es buena respuesta contra estas.",
+    "line": "Línea de mejora",
+    "unique": "Unidad única",
+    "noCounters": "Todavía sin counters",
+    "noCountersBody": "No hay datos de counters para esta unidad. Si sabes qué le gana, añádelo.",
+    "noStrongAgainst": "Todavía no figura como counter de nada.",
+    "back": "Todas las unidades",
+    "outOf": "de"
   },
   "counter-units": "unidades contrincantes",
   "line": "línea",
   "searchHistory": {
-    "title": "Búsquedas recientes"
+    "title": "Vistas recientemente",
+    "clear": "Borrar"
+  },
+  "feedback": {
+    "question": "¿Es correcta esta lista de counters?",
+    "yes": "Está bien",
+    "no": "Falta algo",
+    "thanks": "Gracias, registrado.",
+    "alreadyVoted": "Ya has votado esta unidad hoy.",
+    "error": "No se ha podido enviar. Inténtalo otra vez.",
+    "suggestTitle": "¿Qué debería ganar a {name}?",
+    "suggestLabel": "Elige las unidades que le ganan",
+    "commentLabel": "¿Algo que añadir? (opcional)",
+    "commentPlaceholder": "Solo en Castillos, hace falta masa crítica...",
+    "submit": "Enviar sugerencia",
+    "sending": "Enviando...",
+    "sent": "Sugerencia enviada. Aparecerá cuando se revise.",
+    "statsTitle": "¿Hay stats mal?",
+    "statsHelp": "Cambia solo los números que estén mal. Lo que no toques se queda igual.",
+    "pickSomething": "Añade un counter, quita uno, o cambia alguna estadística.",
+    "removeTitle": "¿Sobra algo de lo que hay?",
+    "removeHelp": "Marca las que están listadas pero en realidad no le ganan."
+  },
+  "contribute": {
+    "title": "Añadir un counter",
+    "sub": "¿Has visto un enfrentamiento que nos falta? Cuéntanoslo y entra en la cola de revisión.",
+    "unitLabel": "¿Qué unidad necesita un counter?",
+    "unitPlaceholder": "Elige una unidad",
+    "back": "Volver a todas las unidades",
+    "tabCounter": "Añadir un counter",
+    "tabUnit": "Añadir unidad nueva",
+    "tabReport": "Reportar algo"
+  },
+  "admin": {
+    "title": "Cola de revisión",
+    "password": "Contraseña",
+    "signIn": "Entrar",
+    "wrongPassword": "Contraseña incorrecta.",
+    "empty": "Nada pendiente de revisar.",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "votes": "Votos",
+    "accurate": "correcto",
+    "inaccurate": "incorrecto",
+    "suggests": "sugiere",
+    "counters": "counters",
+    "counterQueue": "Sugerencias de counters",
+    "statQueue": "Correcciones de stats",
+    "unitQueue": "Unidades nuevas",
+    "unitSummary": "{counters} counters, {stats} stats rellenadas",
+    "actionAdd": "añadir",
+    "actionRemove": "quitar",
+    "reportQueue": "Reportes",
+    "resolve": "Hecho",
+    "dismiss": "Descartar"
+  },
+  "newUnit": {
+    "nameLabel": "Nombre de la unidad",
+    "namePlaceholder": "Alabardero, Ghulam, Húsar alado...",
+    "nameRequired": "Ponle un nombre a la unidad.",
+    "classLabel": "Clase",
+    "civLabel": "Civilización",
+    "noCiv": "Ninguna o genérica",
+    "uniqueLabel": "Unidad única",
+    "statsTitle": "Estadísticas",
+    "statsHelp": "Rellena lo que sepas. Los campos vacíos se quedan sin valor.",
+    "countersLabel": "¿Qué le gana?",
+    "commentPlaceholder": "De dónde sale, en qué parche entró...",
+    "submit": "Enviar unidad",
+    "sent": "Unidad enviada. Aparecerá en la web cuando se revise."
+  },
+  "civs": {
+    "title": "Explora por civilización",
+    "sub": "Arrastra para verlas. Pulsa una para ver sus unidades."
+  },
+  "report": {
+    "label": "¿Qué está mal?",
+    "help": "Cualquier cosa que no encaje en las otras dos pestañas: un nombre mal, una página rota, una imagen que falta, una idea.",
+    "placeholder": "La página del Mangudai muestra el retrato equivocado...",
+    "tooShort": "Escribe un poco más para que se pueda hacer algo.",
+    "submit": "Enviar reporte",
+    "sent": "Reporte enviado. Gracias."
   }
 }

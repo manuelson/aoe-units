@@ -1,82 +1,62 @@
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { NextIntlClientProvider, useLocale } from "next-intl";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider, themeScript } from "@/components/theme-provider";
+import { NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import "../globals.css";
+import { routing } from "@/i18n/routing";
 import { SearchHistoryProvider } from "@/context/search-history";
 import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
+// app/layout.tsx owns the canonical SEO block (metadataBase, OG, alternates).
+// This one only adds what is locale-specific.
 export const metadata: Metadata = {
-  title: "Aoe units: find the best counter units in Age of Empires II",
-  description: "Search and discover Age of Empires II counter units",
-  icons: {
-    icon: "/icon.png",
-  },
+  title: "Counter units for Age of Empires II",
+  description:
+    "Look up any Age of Empires II unit and see what beats it, what it beats, and its stats.",
+  icons: { icon: "/icon.png" },
   keywords: [
     "Age of Empires II",
-    "Counter Units",
-    "Units",
-    "Units Counter",
-    "aoe units",
-    "aoe2",
-    "aoe2 units",
     "aoe2 counters",
-    "aoe2 counter units",
-    "aoe2 counter",
-    "aoe2 counter units",
-    "units",
-    "units counter",
-    "units counter units",
-    "units counter",
-    "units counter units",
-    "units counter",
-    "units counter units",
+    "counter units",
+    "aoe2 unit counters",
     "aoeunits",
-    "aoeunits.com",
   ],
-  robots: {
-    index: true,
-    follow: true,
-    nocache: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      nocache: true,
-    },
-  },
-  authors: [{ name: "AoeUnits", url: "https://aoeunits.com" }],
-  generator: "AoeUnits",
-  applicationName: "AoeUnits",
-  category: "Games",
-  creator: "AoeUnits",
-  publisher: "AoeUnits",
-  openGraph: {
-    title: "AoeUnits: find the best counter units in Age of Empires II",
-    description: "Search and discover Age of Empires II counter units",
-    url: "https://aoeunits.com",
-    siteName: "AoeUnits",
-  },
 };
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  const locale = useLocale();
+  const { locale } = await params;
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) notFound();
+
+  // Without this next-intl falls back to the dynamic request API, which opts every
+  // page out of static rendering even when generateStaticParams is present.
+  setRequestLocale(locale);
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
+      <head>
+        {/* Server-rendered only, so React never tries to run it during a client render. */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body
+        className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}
+      >
         <NextIntlClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider>
             <SearchHistoryProvider>
               {children}
               <Analytics />

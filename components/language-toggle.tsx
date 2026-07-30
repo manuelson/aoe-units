@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Globe } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function LanguageToggle() {
-  const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
 
+  // ponytail: full navigation, not router.push, because <html lang> and the whole
+  // server-rendered tree change with the locale, and a client-side remount of
+  // the [locale] layout must re-run to swap the messages bundle.
   const changeLanguage = (newLocale: string) => {
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-    router.push(newPath);
+    window.location.href = pathname.replace(`/${locale}`, `/${newLocale}`);
   };
 
   return (

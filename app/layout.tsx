@@ -1,72 +1,79 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { useLocale } from "next-intl";
-
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "Aoe units: find the best counter units in Age of Empires II",
-  description: "Search and discover Age of Empires II counter units",
-  icons: {
-    icon: "/icon.png",
+  metadataBase: new URL("https://aoeunits.com"),
+  title: {
+    default: "AoeUnits: Age of Empires II counter units",
+    template: "%s | AoeUnits",
   },
+  description:
+    "Explore counter units, upgrades, and lines for Age of Empires II.",
+  applicationName: "AoeUnits",
   keywords: [
-    "Age of Empires II",
-    "Counter Units",
-    "Units",
-    "Units Counter",
-    "aoe units",
-    "aoe2",
-    "aoe2 units",
-    "aoe2 counters",
-    "aoe2 counter units",
-    "aoe2 counter",
-    "aoe2 counter units",
+    "Age of Empires",
+    "AoE2",
     "units",
-    "units counter",
-    "units counter units",
-    "units counter",
-    "units counter units",
-    "units counter",
-    "units counter units",
-    "aoeunits",
-    "aoeunits.com",
+    "counters",
+    "upgrades",
+    "tech tree",
   ],
   robots: {
     index: true,
     follow: true,
-    nocache: true,
     googleBot: {
       index: true,
       follow: true,
-      nocache: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
     },
   },
-  authors: [{ name: "AoeUnits", url: "https://aoeunits.com" }],
-  generator: "AoeUnits",
-  applicationName: "AoeUnits",
-  category: "Games",
-  creator: "AoeUnits",
-  publisher: "AoeUnits",
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "/en",
+      es: "/es",
+    },
+  },
   openGraph: {
-    title: "AoeUnits: find the best counter units in Age of Empires II",
-    description: "Search and discover Age of Empires II counter units",
-    url: "https://aoeunits.com",
+    type: "website",
+    url: "/",
     siteName: "AoeUnits",
+    title: "AoeUnits: Age of Empires II counter units",
+    description:
+      "Explore counter units, upgrades, and lines for Age of Empires II.",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "AoeUnits",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AoeUnits: Age of Empires II counter units",
+    description:
+      "Explore counter units, upgrades, and lines for Age of Empires II.",
+    images: ["/og-default.png"],
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+};
+
+// ponytail: passthrough. app/[locale]/layout.tsx renders <html>/<body>
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const locale = useLocale();
-
-  return (
-    <html lang={locale}>
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+  return children;
 }
