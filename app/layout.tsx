@@ -28,36 +28,16 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  alternates: {
-    canonical: "/",
-    languages: {
-      en: "/en",
-      es: "/es",
-    },
-  },
-  openGraph: {
-    type: "website",
-    url: "/",
-    siteName: "AoeUnits",
-    title: "AoeUnits: Age of Empires II counter units",
-    description:
-      "Explore counter units, upgrades, and lines for Age of Empires II.",
-    images: [
-      {
-        url: "/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "AoeUnits",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "AoeUnits: Age of Empires II counter units",
-    description:
-      "Explore counter units, upgrades, and lines for Age of Empires II.",
-    images: ["/og-default.png"],
-  },
+  // Canonicals and hreflang are per-page (lib/seo.tsx). A site-wide canonical of "/"
+  // would have every unit page declaring the homepage as its canonical.
+  //
+  // openGraph lives in lib/seo.tsx::og() — Next replaces the object per segment rather
+  // than merging it, so anything declared here is dropped the moment a page sets its own.
+  //
+  // twitter carries only the card type: a title/description here would be pinned for the
+  // whole site (postProcessMetadata only auto-fills the fields left empty), which is how
+  // every Spanish page ended up shipping an English Twitter card.
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

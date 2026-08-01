@@ -5,6 +5,7 @@ import { getLines, getCivilizations } from "@/lib/queries";
 import { SiteHeader } from "@/components/site-header";
 import { UnitGrid } from "@/components/unit-grid";
 import { Footer } from "@/components/footer";
+import { alternates } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -15,7 +16,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale });
-  return { title: t("browse.title"), alternates: { canonical: `/${locale}/units` } };
+  // No openGraph block on purpose: declaring one here would replace the layout's, which is
+  // what carries the /[locale]/opengraph-image card. Next fills og:title and og:description
+  // from the fields below anyway.
+  return {
+    // Not browse.title: that string is the on-page heading ("Todas las unidades del juego"),
+    // which carries no keyword anyone searches for. absolute, because the locale layout has
+    // already consumed the "%s | AoeUnits" template so the suffix would not be appended here.
+    title: { absolute: t("seo.unitsTitle") },
+    description: t("seo.unitsDescription"),
+    alternates: alternates(locale, "/units"),
+  };
 }
 
 export default async function UnitsPage({

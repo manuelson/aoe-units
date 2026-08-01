@@ -32,12 +32,16 @@ export function Portrait({
   size = "md",
   className,
   priority,
+  alt = "",
 }: {
   id: string;
   name: string;
   size?: keyof typeof SIZES;
   className?: string;
   priority?: boolean;
+  /** Defaults to empty: in lists and grids the unit name is already next to the image.
+   *  Pass real text where the portrait is the page's subject, e.g. a unit page header. */
+  alt?: string;
 }) {
   const [broken, setBroken] = useState(false);
   const { px, cls } = SIZES[size];
@@ -58,7 +62,7 @@ export function Portrait({
       ) : (
         <Image
           src={`/units/${id}.png`}
-          alt=""
+          alt={alt}
           width={px}
           height={px}
           priority={priority}

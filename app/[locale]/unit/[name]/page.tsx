@@ -12,6 +12,7 @@ import { CivBadge } from "@/components/civ-badge";
 import { CounterList } from "@/components/counter-list";
 import { UnitStats } from "@/components/unit-stats";
 import { CounterFeedback } from "@/components/counter-feedback";
+import { JsonLd, SITE, alternates, og } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -27,17 +28,27 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { name, locale } = await params;
   const line = await getLine(name, locale);
-  if (!line) return { title: "Not found" };
+  if (!line) return { title: "Not found", robots: { index: false, follow: false } };
 
   const t = await getTranslations({ locale });
-  const counters = line.counteredBy.map((c) => c.name).join(", ");
+  // Capped: Skirmisher has 21 counters, and listing them all pushed the description past
+  // 400 characters against a ~160 budget. The full list is on the page and in the FAQ block.
+  const counters = line.counteredBy.slice(0, 4).map((c) => c.name).join(", ");
+
+  const title = t("seo.unitTitle", { name: line.name });
+  const description = counters
+    ? t("seo.unitDescription", { name: line.name, counters })
+    : t("seo.unitDescriptionEmpty", { name: line.name });
 
   return {
-    title: `${line.name}: ${t("unit.counters").toLowerCase()}`,
-    description: counters
-      ? `${line.name} ${t("unit.counters").toLowerCase()}: ${counters}.`
-      : `${line.name} ${t("counter-units")}.`,
-    alternates: { canonical: `/${locale}/unit/${name}` },
+    // absolute: the " | AoeUnits" template pushed long Spanish names ("Carro de guerra
+    // (disparo concentrado)") past 80 characters, and Google cuts around 60.
+    title: { absolute: title },
+    description,
+    // Lowercased: the route is case-insensitive, so /unit/Knight and /unit/knight both
+    // resolve and would otherwise be indexed as two pages with the same content.
+    alternates: alternates(locale, `/unit/${name.toLowerCase()}`),
+    openGraph: og(locale, { title, description, type: "article" }),
   };
 }
 
@@ -53,8 +64,51 @@ export default async function UnitPage({ params }: PageProps) {
 
   if (!line) notFound();
 
+  // Only questions the page actually answers on screen — Google rejects FAQ markup
+  // whose answers are not visible, so an empty list means no FAQ block at all.
+  const faqs = [
+    line.counteredBy.length && {
+      q: t("seo.faqCounteredBy", { name: line.name }),
+      a: t("seo.faqCounteredByAnswer", {
+        name: line.name,
+        counters: line.counteredBy.map((c) => c.name).join(", "),
+      }),
+    },
+    line.strongAgainst.length && {
+      q: t("seo.faqStrongAgainst", { name: line.name }),
+      a: t("seo.faqStrongAgainstAnswer", {
+        name: line.name,
+        units: line.strongAgainst.map((c) => c.name).join(", "),
+      }),
+    },
+  ].filter(Boolean) as { q: string; a: string }[];
+
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { name: t("seo.home"), item: `${SITE}/${locale}` },
+            { name: t("browse.title"), item: `${SITE}/${locale}/units` },
+            { name: line.name, item: `${SITE}/${locale}/unit/${name.toLowerCase()}` },
+          ].map((e, i) => ({ "@type": "ListItem", position: i + 1, ...e })),
+        }}
+      />
+      {faqs.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }}
+        />
+      )}
       <SiteHeader lines={allLines} />
 
       <main className="mx-auto max-w-4xl px-4 py-10">
@@ -67,7 +121,13 @@ export default async function UnitPage({ params }: PageProps) {
         </Link>
 
         <header className="flex flex-col gap-5 sm:flex-row sm:items-center">
-          <Portrait id={line.id} name={line.name} size="xl" priority />
+          <Portrait
+            id={line.id}
+            name={line.name}
+            size="xl"
+            priority
+            alt={`${line.name} — Age of Empires II`}
+          />
           <div className="min-w-0">
             <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
               {line.name}

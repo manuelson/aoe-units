@@ -1,27 +1,38 @@
 import type { MetadataRoute } from "next";
 import { getLineIds } from "@/lib/queries";
 import { routing } from "@/i18n/routing";
-
-const BASE = "https://aoeunits.com";
+import { SITE } from "@/lib/seo";
 
 export const revalidate = 3600;
+
+type Entry = MetadataRoute.Sitemap[number];
+
+/** Every locale gets its own <url> carrying the full alternate set, per Google's hreflang spec. */
+function localised(path: string, rest: Omit<Entry, "url">): Entry[] {
+  const languages = Object.fromEntries(
+    routing.locales.map((l) => [l, `${SITE}/${l}${path}`])
+  );
+  return routing.locales.map((locale) => ({
+    url: `${SITE}/${locale}${path}`,
+    alternates: { languages },
+    ...rest,
+  }));
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const ids = await getLineIds();
 
-  const pages = routing.locales.flatMap((locale) => [
-    { url: `${BASE}/${locale}`, changeFrequency: "weekly" as const, priority: 1 },
-    { url: `${BASE}/${locale}/units`, changeFrequency: "weekly" as const, priority: 0.9 },
-  ]);
-
-  const units = routing.locales.flatMap((locale) =>
-    ids.map((id) => ({
-      url: `${BASE}/${locale}/unit/${id.toLowerCase()}`,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    }))
-  );
-
+  // No lastModified: nothing in the schema tracks per-row edits, and a lastmod that is
+  // really the build time on every URL is one Google learns to ignore.
   // /contribute and /admin are noindex, so they are deliberately absent.
-  return [...pages, ...units];
+  return [
+    ...localised("", { changeFrequency: "weekly", priority: 1 }),
+    ...localised("/units", { changeFrequency: "weekly", priority: 0.9 }),
+    ...ids.flatMap((id) =>
+      localised(`/unit/${id.toLowerCase()}`, {
+        changeFrequency: "monthly",
+        priority: 0.7,
+      })
+    ),
+  ];
 }

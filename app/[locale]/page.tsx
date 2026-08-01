@@ -9,8 +9,20 @@ import { UnitGrid } from "@/components/unit-grid";
 import { RecentlyViewed } from "@/components/recently-viewed";
 import { ContributeCta } from "@/components/contribute-cta";
 import { Footer } from "@/components/footer";
+import { JsonLd, SITE, alternates } from "@/lib/seo";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  // Title and description come from the locale layout; this only pins the URL set.
+  return { alternates: alternates(locale) };
+}
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -26,6 +38,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "AoeUnits",
+          url: `${SITE}/${locale}`,
+          inLanguage: locale,
+          description: t("seo.homeDescription"),
+        }}
+      />
       <SiteHeader />
       <main>
         <Hero lines={lines} counterCount={counterCount} />

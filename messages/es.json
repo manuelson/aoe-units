@@ -72,8 +72,30 @@
     "back": "Todas las unidades",
     "outOf": "de"
   },
+  "notFound": {
+    "title": "Esa unidad no existe",
+    "body": "Puede que la página se haya movido, o que el nombre de la unidad se escriba de otra forma.",
+    "back": "Volver a AoeUnits",
+    "browse": "Ver todas las unidades"
+  },
   "counter-units": "unidades contrincantes",
   "line": "línea",
+  "seo": {
+    "homeTitle": "Counters de AoE2 — qué gana a cada unidad",
+    "homeDescription": "Busca cualquier unidad de Age of Empires II y mira al instante qué le gana, sus estadísticas y su línea de mejora. Datos revisados por la comunidad.",
+    "unitsDescription": "Todas las líneas de unidad de Age of Empires II en una lista, filtrable por clase y civilización. Entra en cualquier unidad para ver sus counters, stats y mejoras.",
+    "unitTitle": "Counters de {name} — qué le gana en AoE2",
+    "unitDescription": "A {name} le ganan {counters}. Stats, counters y línea de mejora completos en AoE2.",
+    "unitDescriptionEmpty": "Estadísticas, línea de mejora y counters de {name} en Age of Empires II.",
+    "faqCounteredBy": "¿Qué gana a {name} en Age of Empires II?",
+    "faqCounteredByAnswer": "A {name} le ganan {counters}.",
+    "faqStrongAgainst": "¿Contra qué es fuerte {name} en Age of Empires II?",
+    "faqStrongAgainstAnswer": "{name} es una buena respuesta contra {units}.",
+    "home": "Inicio",
+    "ogTagline": "Descubre qué le gana antes de que empiece la pelea.",
+    "ogSubtitle": "Counters, estadísticas y líneas de mejora de cada unidad de Age of Empires II.",
+    "unitsTitle": "Todas las unidades de Age of Empires II — counters y stats"
+  },
   "searchHistory": {
     "title": "Vistas recientemente",
     "clear": "Borrar"

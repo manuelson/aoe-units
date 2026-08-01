@@ -72,8 +72,30 @@
     "back": "All units",
     "outOf": "out of"
   },
+  "notFound": {
+    "title": "That unit does not exist",
+    "body": "The page may have moved, or the unit name is spelled differently.",
+    "back": "Back to AoeUnits",
+    "browse": "Browse all units"
+  },
   "counter-units": "counter units",
   "line": "line",
+  "seo": {
+    "homeTitle": "AoE2 counter units — what beats every unit",
+    "homeDescription": "Search any Age of Empires II unit and see instantly what counters it, its full stats and its upgrade line. Free, community-checked counter data.",
+    "unitsDescription": "Every Age of Empires II unit line in one list, filterable by class and civilization. Open any unit for its counters, stats and upgrades.",
+    "unitTitle": "{name} counters — what beats {name} in AoE2",
+    "unitDescription": "{name} is countered by {counters}. Full AoE2 stats, counters and upgrade line.",
+    "unitDescriptionEmpty": "Age of Empires II stats, upgrade line and counter data for {name}.",
+    "faqCounteredBy": "What counters {name} in Age of Empires II?",
+    "faqCounteredByAnswer": "{name} is countered by {counters}.",
+    "faqStrongAgainst": "What is {name} strong against in Age of Empires II?",
+    "faqStrongAgainstAnswer": "{name} is a good answer to {units}.",
+    "home": "Home",
+    "ogTagline": "Know what beats it before the fight starts.",
+    "ogSubtitle": "Counters, stats and upgrade lines for every Age of Empires II unit.",
+    "unitsTitle": "All Age of Empires II units — counters and stats"
+  },
   "searchHistory": {
     "title": "Recently viewed",
     "clear": "Clear"
