@@ -102,6 +102,7 @@
   },
   "feedback": {
     "question": "Is this counter list right?",
+    "back": "Back",
     "yes": "Looks right",
     "no": "Something is missing",
     "thanks": "Thanks, recorded.",

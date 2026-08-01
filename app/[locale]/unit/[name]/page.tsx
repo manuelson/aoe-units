@@ -216,19 +216,20 @@ export default async function UnitPage({ params }: PageProps) {
           )}
         </section>
 
-        <div className="mt-12">
-          <CounterFeedback
-            lineId={line.id}
-            lineName={line.name}
-            allLines={allLines}
-            listed={line.counteredBy}
-            baseUnitId={line.units[0]?.id}
-            baseStats={line.stats}
-          />
-        </div>
+        <CounterFeedback
+          floating
+          lineId={line.id}
+          lineName={line.name}
+          allLines={allLines}
+          listed={line.counteredBy}
+          baseUnitId={line.units[0]?.id}
+          baseStats={line.stats}
+        />
       </main>
 
       <Footer />
+      {/* Clearance for the floating feedback bar. */}
+      <div className="h-24" />
     </>
   );
 }

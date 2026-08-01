@@ -102,6 +102,7 @@
   },
   "feedback": {
     "question": "¿Es correcta esta lista de counters?",
+    "back": "Atrás",
     "yes": "Está bien",
     "no": "Falta algo",
     "thanks": "Gracias, registrado.",
