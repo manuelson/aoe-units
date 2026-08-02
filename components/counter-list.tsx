@@ -1,13 +1,13 @@
 import { Link } from "@/i18n/navigation";
 import { Portrait } from "@/components/portrait";
 import { CivBadge } from "@/components/civ-badge";
-import type { LineSummary } from "@/lib/queries";
+import type { CounterEntry } from "@/lib/queries";
 
 /**
  * A list of counter lines. Every entry is a link: the old unit page rendered these as
  * <span>s, so there was no way to click through to the unit that beats yours.
  */
-export function CounterList({ lines }: { lines: LineSummary[] }) {
+export function CounterList({ lines }: { lines: CounterEntry[] }) {
   return (
     <ul className="grid gap-2 sm:grid-cols-2">
       {lines.map((line) => (
@@ -28,6 +28,11 @@ export function CounterList({ lines }: { lines: LineSummary[] }) {
                 <span className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
                   <CivBadge civ={line.civ} size={14} />
                   <span className="truncate">{line.civ}</span>
+                </span>
+              )}
+              {line.reason && (
+                <span className="mt-1 block text-xs leading-snug text-muted-foreground">
+                  {line.reason}
                 </span>
               )}
             </span>

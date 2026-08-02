@@ -43,12 +43,15 @@ export type LineSummary = {
   counterCount: number;
 };
 
+/** A line on a counter list, plus the note for that specific matchup (most have none). */
+export type CounterEntry = LineSummary & { reason: string | null };
+
 export type LineDetail = LineSummary & {
   stats: Stats | null;
   /** Lines that beat this one. */
-  counteredBy: LineSummary[];
+  counteredBy: CounterEntry[];
   /** Lines this one beats. The inverse edge, which the old static data never exposed. */
-  strongAgainst: LineSummary[];
+  strongAgainst: CounterEntry[];
 };
 
 type Row = {
@@ -112,7 +115,7 @@ export async function getLine(id: string, locale: string): Promise<LineDetail | 
     supabase.from("unit_line").select(SELECT).eq("unit.unit_name.locale", locale),
     supabase
       .from("counter")
-      .select("line_id, counter_line_id")
+      .select("line_id, counter_line_id, reason_en, reason_es")
       .or(`line_id.eq.${match.id},counter_line_id.eq.${match.id}`),
   ]);
   if (error) throw error;
@@ -122,10 +125,18 @@ export async function getLine(id: string, locale: string): Promise<LineDetail | 
   if (!self) return null;
 
   const cmp = collator(locale);
-  const pick = (ids: string[]) =>
-    ids
-      .map((i) => byId.get(i))
-      .filter((l): l is LineSummary => Boolean(l))
+  // The note is written for the edge, not the unit, so it comes off the row and not the summary.
+  const reasonOf = (e: { reason_en: string | null; reason_es: string | null }) =>
+    (locale === "es" ? e.reason_es : e.reason_en) ?? null;
+  const pick = (
+    rows: { id: string; reason_en: string | null; reason_es: string | null }[]
+  ): CounterEntry[] =>
+    rows
+      .map((r) => {
+        const line = byId.get(r.id);
+        return line && { ...line, reason: reasonOf(r) };
+      })
+      .filter((l): l is CounterEntry => Boolean(l))
       .sort((a, b) => cmp.compare(a.name, b.name));
 
   const base = (rows as unknown as Row[]).find((r) => r.id === match.id);
@@ -135,10 +146,12 @@ export async function getLine(id: string, locale: string): Promise<LineDetail | 
     ...self,
     stats: baseUnit?.stats ?? null,
     counteredBy: pick(
-      (edges ?? []).filter((e) => e.line_id === match.id).map((e) => e.counter_line_id)
+      (edges ?? [])
+        .filter((e) => e.line_id === match.id)
+        .map((e) => ({ ...e, id: e.counter_line_id }))
     ),
     strongAgainst: pick(
-      (edges ?? []).filter((e) => e.counter_line_id === match.id).map((e) => e.line_id)
+      (edges ?? []).filter((e) => e.counter_line_id === match.id).map((e) => ({ ...e, id: e.line_id }))
     ),
   };
 }

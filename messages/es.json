@@ -8,7 +8,8 @@
     "headline": "Sabe qué la mata antes de empezar la pelea.",
     "sub": "Busca cualquier unidad de Age of Empires II y mira sus counters, a quién gana y sus stats.",
     "browse": "Ver todas las unidades",
-    "stat": "{lines} líneas de unidad, {counters} enfrentamientos"
+    "stat": "{lines} líneas de unidad, {counters} enfrentamientos",
+    "showcaseLink": "Counters de {unit}"
   },
   "triangle": {
     "title": "La regla que lo ordena todo",

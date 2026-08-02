@@ -65,24 +65,34 @@ export async function Hero({
         </div>
       </div>
 
-      <ul aria-hidden className="grid grid-cols-3 gap-3 sm:gap-4">
+      {/* Not decorative any more: each tile links to that unit's counters. */}
+      <ul className="grid grid-cols-3 gap-3 sm:gap-4">
         {SHOWCASE.map((id, i) => {
           const line = byId.get(id);
           if (!line) return null;
           return (
             <li
               key={id}
-              // The middle tile is lifted so the block reads as a composition, not a table.
-              className={`${ENTER} ${i === 4 ? "sm:-translate-y-3" : ""}`}
+              className={ENTER}
               style={{ animationDelay: `${150 + i * 40}ms` }}
             >
-              <Portrait
-                id={id}
-                name={line.name}
-                size="xl"
-                priority={i < 3}
-                className="h-full w-full"
-              />
+              <Link
+                href={`/unit/${id.toLowerCase()}`}
+                title={t("hero.showcaseLink", { unit: line.name })}
+                className="group relative block overflow-hidden rounded-lg transition-transform hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Portrait
+                  id={id}
+                  name={line.name}
+                  size="xl"
+                  priority={i < 3}
+                  alt={t("hero.showcaseLink", { unit: line.name })}
+                  className="h-full w-full"
+                />
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/80 to-transparent px-2 pb-1.5 pt-6 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                  {line.name}
+                </span>
+              </Link>
             </li>
           );
         })}

@@ -8,7 +8,8 @@
     "headline": "Know what beats it before the fight starts.",
     "sub": "Search any Age of Empires II unit and get its counters, what it beats, and its stats.",
     "browse": "Browse all units",
-    "stat": "{lines} unit lines, {counters} counter matchups"
+    "stat": "{lines} unit lines, {counters} counter matchups",
+    "showcaseLink": "{unit} counters"
   },
   "triangle": {
     "title": "The rule everything else bends around",
