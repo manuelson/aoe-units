@@ -151,7 +151,15 @@ export function UnitGrid({
           </button>
         </div>
       ) : (
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        /*
+         * The art is the tile. The old layout boxed every line in an identical card with a
+         * 56px thumbnail, so 111 rows read as one undifferentiated list and the portraits
+         * (the only thing that tells two units apart at a glance) were the smallest element
+         * on screen. No card chrome now: the portrait fills its column, the label sits on
+         * the page background, and the only overlay is the counter count, which is what
+         * this site is for.
+         */
+        <ul className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7">
           {shown.map((line) => (
             <motion.li
               key={line.id}
@@ -162,27 +170,33 @@ export function UnitGrid({
             >
               <Link
                 href={`/unit/${line.id.toLowerCase()}`}
-                className={cn(
-                  "flex h-full items-center gap-3 rounded-xl border border-border bg-card p-3",
-                  "transition-colors hover:border-primary/50 active:scale-[0.98]",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                )}
+                className="group block focus-visible:outline-none"
               >
-                <Portrait id={line.id} name={line.name} size="md" />
-                <span className="min-w-0 flex-1">
-                  {/* Two lines rather than truncate: "Arquero con arco largo" is
-                      unreadable cut to one line at this card width. */}
-                  <span className="line-clamp-2 font-medium leading-tight">
-                    {line.name}
+                <Portrait
+                  id={line.id}
+                  name={line.name}
+                  size="tile"
+                  className={cn(
+                    "transition-shadow",
+                    "group-hover:ring-2 group-hover:ring-primary",
+                    "group-focus-visible:ring-2 group-focus-visible:ring-ring"
+                  )}
+                />
+
+                <span className="mt-2 block line-clamp-2 text-[13px] font-medium leading-tight group-hover:text-primary">
+                  {line.name}
+                </span>
+                <span className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                  {line.civ && <CivBadge civ={line.civ} size={12} />}
+                  <span className="truncate">
+                    {line.civ ?? t(`class.${line.unitClass}`)}
                   </span>
-                  <span className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                    {line.civ && <CivBadge civ={line.civ} size={14} />}
-                    <span className="truncate">
-                      {line.civ ?? t(`class.${line.unitClass}`)}
+                  <span className="ml-auto font-mono tabular-nums">
+                    {line.counterCount}
+                    <span className="sr-only">
+                      {" "}
+                      {t("browse.counters", { count: line.counterCount })}
                     </span>
-                  </span>
-                  <span className="mt-1 block font-mono text-[11px] text-muted-foreground">
-                    {t("browse.counters", { count: line.counterCount })}
                   </span>
                 </span>
               </Link>

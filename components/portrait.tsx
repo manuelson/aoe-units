@@ -9,6 +9,8 @@ const SIZES = {
   md: { px: 56, cls: "h-14 w-14 text-sm" },
   lg: { px: 88, cls: "h-22 w-22 text-lg" },
   xl: { px: 128, cls: "h-32 w-32 text-2xl" },
+  /** Fills its column instead of a fixed box: the browse grid where the art is the tile. */
+  tile: { px: 224, cls: "aspect-square w-full text-3xl" },
 } as const;
 
 /** First letter of each word: "Hand Cannoneer" -> "HC". */

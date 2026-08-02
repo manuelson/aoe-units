@@ -4,38 +4,40 @@ import { CivBadge } from "@/components/civ-badge";
 import type { CounterEntry } from "@/lib/queries";
 
 /**
- * A list of counter lines. Every entry is a link: the old unit page rendered these as
- * <span>s, so there was no way to click through to the unit that beats yours.
+ * A list of counter lines, in the same tile language as the browse grid: the portrait is
+ * the tile, the label sits on the page background. The old two-column cards gave the art
+ * 56px and spent the rest of the row on the upgrade chain, which is already on the page
+ * you land on when you click through.
  */
 export function CounterList({ lines }: { lines: CounterEntry[] }) {
   return (
-    <ul className="grid gap-2 sm:grid-cols-2">
+    <ul className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {lines.map((line) => (
         <li key={line.id}>
           <Link
             href={`/unit/${line.id.toLowerCase()}`}
-            className="flex h-full items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-primary/50 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="group block focus-visible:outline-none"
           >
-            <Portrait id={line.id} name={line.name} size="md" />
-            <span className="min-w-0 flex-1">
-              <span className="block truncate font-medium leading-tight">{line.name}</span>
-              {line.units.length > 1 && (
-                <span className="mt-0.5 block truncate text-xs text-muted-foreground">
-                  {line.units.map((u) => u.name).join(" · ")}
-                </span>
-              )}
-              {line.civ && (
-                <span className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <CivBadge civ={line.civ} size={14} />
-                  <span className="truncate">{line.civ}</span>
-                </span>
-              )}
-              {line.reason && (
-                <span className="mt-1 block text-xs leading-snug text-muted-foreground">
-                  {line.reason}
-                </span>
-              )}
+            <Portrait
+              id={line.id}
+              name={line.name}
+              size="tile"
+              className="transition-shadow group-hover:ring-2 group-hover:ring-primary group-focus-visible:ring-2 group-focus-visible:ring-ring"
+            />
+            <span className="mt-2 block line-clamp-2 text-[13px] font-medium leading-tight group-hover:text-primary">
+              {line.name}
             </span>
+            {line.civ && (
+              <span className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <CivBadge civ={line.civ} size={12} />
+                <span className="truncate">{line.civ}</span>
+              </span>
+            )}
+            {line.reason && (
+              <span className="mt-1.5 block text-[11px] leading-snug text-muted-foreground">
+                {line.reason}
+              </span>
+            )}
           </Link>
         </li>
       ))}
