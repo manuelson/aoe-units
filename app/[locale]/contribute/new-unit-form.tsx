@@ -9,6 +9,7 @@ import { rank } from "@/lib/search/rank";
 import type { FlatStats } from "@/lib/stats-fields";
 import type { LineSummary, UnitClass } from "@/lib/queries";
 import { cn } from "@/lib/utils";
+import { inputClass } from "@/lib/ui";
 
 const CLASSES: UnitClass[] = [
   "Infantry",
@@ -20,11 +21,6 @@ const CLASSES: UnitClass[] = [
   "Monk",
   "Other",
 ];
-
-const input = cn(
-  "w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground",
-  "placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-);
 
 /** Propose a unit the catalog does not have yet, with its class, civ, stats and counters. */
 export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: string[] }) {
@@ -98,7 +94,7 @@ export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: strin
             maxLength={60}
             required
             placeholder={t("newUnit.namePlaceholder")}
-            className={input}
+            className={inputClass}
           />
         </div>
 
@@ -110,7 +106,7 @@ export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: strin
             id="nu-class"
             value={unitClass}
             onChange={(e) => setUnitClass(e.target.value as UnitClass)}
-            className={input}
+            className={inputClass}
           >
             {CLASSES.map((c) => (
               <option key={c} value={c}>
@@ -128,7 +124,7 @@ export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: strin
             id="nu-civ"
             value={civ}
             onChange={(e) => setCiv(e.target.value)}
-            className={input}
+            className={inputClass}
           >
             <option value="">{t("newUnit.noCiv")}</option>
             {civs.map((c) => (
@@ -168,7 +164,7 @@ export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: strin
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t("browse.filterPlaceholder")}
-          className={cn(input, "mb-3")}
+          className={cn(inputClass, "mb-3")}
         />
         <ul className="grid max-h-64 grid-cols-1 gap-1.5 overflow-y-auto sm:grid-cols-2">
           {options.map((line) => {
@@ -209,7 +205,7 @@ export function NewUnitForm({ lines, civs }: { lines: LineSummary[]; civs: strin
           maxLength={500}
           rows={2}
           placeholder={t("newUnit.commentPlaceholder")}
-          className={input}
+          className={inputClass}
         />
       </div>
 

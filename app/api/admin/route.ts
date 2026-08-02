@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { serviceClient } from "@/lib/supabase/server";
 import { ADMIN_COOKIE, checkPassword, isAuthed, sessionToken } from "@/lib/admin-auth";
+import { toPascalId, uniqueLineId } from "@/lib/unit-id";
 
 /** Sign in. Sets an httpOnly cookie holding an HMAC, never the password. */
 export async function PUT(req: Request) {
@@ -22,26 +22,11 @@ export async function PUT(req: Request) {
   return res;
 }
 
-/** "Hand Cannoneer" -> "HandCannoneer", which is also the image filename convention. */
-function toPascalId(name: string) {
-  const id = name
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-zA-Z0-9 ]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w[0].toUpperCase() + w.slice(1))
-    .join("");
-  return id || "Unit";
-}
-
-async function uniqueLineId(db: SupabaseClient, base: string) {
-  for (let i = 0; i < 50; i++) {
-    const candidate = i === 0 ? base : `${base}${i + 1}`;
-    const { data } = await db.from("unit_line").select("id").eq("id", candidate).single();
-    if (!data) return candidate;
-  }
-  throw new Error(`could not find a free id for ${base}`);
+/** Sign out. A 12h cookie on a shared machine needs a way off. */
+export async function DELETE() {
+  const res = NextResponse.json({ ok: true });
+  res.cookies.set(ADMIN_COOKIE, "", { path: "/", maxAge: 0 });
+  return res;
 }
 
 /** Approve or reject a pending suggestion of any kind. */

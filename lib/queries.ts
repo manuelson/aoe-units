@@ -1,12 +1,13 @@
 import { supabase } from "@/lib/supabase/server";
 import { routing } from "@/i18n/routing";
+import { UNIT_ID_RE } from "@/lib/unit-id";
 
 /**
  * localeCompare throws RangeError on an empty-string locale, which takes down the whole
  * page render. Validate against the configured locales and let Intl pick the default
  * otherwise. Intl.Collator also caches, unlike a localeCompare call per comparison.
  */
-function collator(locale: string) {
+export function collator(locale: string) {
   const valid = (routing.locales as readonly string[]).includes(locale);
   return new Intl.Collator(valid ? locale : undefined);
 }
@@ -126,6 +127,9 @@ export async function getLine(id: string, locale: string): Promise<LineDetail | 
   // Route params arrive lowercased; ids are PascalCase.
   const { data: match } = await supabase.from("unit_line").select("id").ilike("id", id).single();
   if (!match) return null;
+  // match.id comes back from the database so it is already safe, but it is interpolated
+  // into the .or() below and that filter parser treats commas and parens as syntax.
+  if (!UNIT_ID_RE.test(match.id)) return null;
 
   const [{ data: rows, error }, { data: edges }] = await Promise.all([
     supabase.from("unit_line").select(SELECT).eq("unit.unit_name.locale", locale),

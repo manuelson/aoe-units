@@ -3,8 +3,11 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, X, Loader2, MessageSquareWarning } from "lucide-react";
+import { Check, X, Loader2, MessageSquareWarning, ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { Portrait } from "@/components/portrait";
+import { CivBadge } from "@/components/civ-badge";
+import { inputClass } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
 export type Pending = {
@@ -21,6 +24,8 @@ export type Pending = {
 export type PendingStat = {
   id: number;
   unitId: string;
+  /** The line the tier belongs to, so the row can link into the editor. */
+  lineId: string;
   unitName: string;
   /** field label -> [current, proposed] */
   changes: [string, string, string][];
@@ -86,10 +91,7 @@ export function SignIn() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
-          className={cn(
-            "w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          )}
+          className={inputClass}
         />
         {error && <p className="mt-1.5 text-sm text-destructive">{error}</p>}
       </div>
@@ -109,6 +111,7 @@ function useReview() {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const [gone, setGone] = useState<string[]>([]);
+  const [created, setCreated] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
 
   async function review(type: string, id: number, action: "approve" | "reject") {
@@ -121,16 +124,17 @@ function useReview() {
       body: JSON.stringify({ id, action, type }),
     });
     setBusy(null);
+    const json = await res.json().catch(() => ({}));
     if (res.ok) {
       setGone((g) => [...g, key]);
+      if (json.lineId) setCreated((c) => ({ ...c, [key]: json.lineId }));
       router.refresh();
     } else {
-      const json = await res.json().catch(() => ({}));
       setError(json.error ?? "error");
     }
   }
 
-  return { review, busy, gone, error };
+  return { review, busy, gone, created, error };
 }
 
 function Actions({
@@ -193,30 +197,58 @@ export function Queue({
   tallies: VoteTally[];
 }) {
   const t = useTranslations();
-  const { review, busy, gone, error } = useReview();
+  const { review, busy, gone, error, created } = useReview();
 
   const live = <T extends { id: number }>(type: string, rows: T[]) =>
-    rows.filter((r) => !gone.includes(`${type}:${r.id}`));
+    rows.filter((r) => !gone.includes(`${type}:${r.id}`) || created[`${type}:${r.id}`]);
 
   const counters = live("counter", pending);
   const statRows = live("stats", stats);
   const unitRows = live("unit", units);
   const reportRows = live("report", reports);
-  const empty =
-    counters.length + statRows.length + unitRows.length + reportRows.length === 0;
 
-  const section = (title: string, count: number, body: React.ReactNode) =>
+  const done = (type: string, id: number) => gone.includes(`${type}:${id}`);
+
+  const counts: [string, string, number][] = [
+    ["counters", t("admin.counterQueue"), counters.filter((r) => !done("counter", r.id)).length],
+    ["stats", t("admin.statQueue"), statRows.filter((r) => !done("stats", r.id)).length],
+    ["units", t("admin.unitQueue"), unitRows.filter((r) => !done("unit", r.id)).length],
+    ["reports", t("admin.reportQueue"), reportRows.filter((r) => !done("report", r.id)).length],
+  ];
+  const empty = counts.every(([, , n]) => n === 0);
+
+  /* Rows, not cards. A bordered box per row is the pattern the rest of the site dropped,
+     and at four queues deep it turned the page into a stack of nested frames. */
+  const section = (id: string, title: string, count: number, body: React.ReactNode) =>
     count > 0 ? (
-      <section>
-        <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-          {title} <span className="font-mono">{count}</span>
+      <section id={id} className="scroll-mt-20">
+        <h2 className="mb-1 flex items-baseline gap-2 text-sm font-medium">
+          {title}
+          <span className="font-mono text-xs tabular-nums text-muted-foreground">{count}</span>
         </h2>
-        {body}
+        <ul className="divide-y divide-border border-t border-border">{body}</ul>
       </section>
     ) : null;
 
   return (
     <div className="space-y-10">
+      {/* Always visible, zeros included: a section that vanishes cannot tell you whether
+          there is nothing pending or the query failed. */}
+      <div className="flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs">
+        {counts.map(([anchor, label, n]) => (
+          <a
+            key={anchor}
+            href={n > 0 ? `#${anchor}` : undefined}
+            className={cn(
+              "tabular-nums",
+              n > 0 ? "text-foreground hover:text-primary" : "text-muted-foreground"
+            )}
+          >
+            {label} {n}
+          </a>
+        ))}
+      </div>
+
       {error && (
         <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {error}
@@ -224,178 +256,185 @@ export function Queue({
       )}
 
       {empty && (
-        <p className="rounded-xl border border-dashed border-border px-6 py-12 text-center text-sm text-muted-foreground">
+        <p className="border-y border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {t("admin.empty")}
         </p>
       )}
 
       {section(
+        "counters",
         t("admin.counterQueue"),
         counters.length,
-        <ul className="space-y-2">
-          {counters.map((p) => (
-            <li
-              key={p.id}
-              className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-3"
-            >
-              <Portrait id={p.lineId} name={p.lineName} size="sm" />
-              <span className="text-sm">
-                <span className="font-medium">{p.lineName}</span>
-                <span className="text-muted-foreground"> {t("admin.suggests")} </span>
-                <span
-                  className={cn(
-                    "rounded-full px-2 py-0.5 text-xs",
-                    p.action === "remove"
-                      ? "bg-destructive/15 text-destructive"
-                      : "bg-primary/15 text-primary"
-                  )}
-                >
-                  {p.action === "remove" ? t("admin.actionRemove") : t("admin.actionAdd")}
-                </span>{" "}
-                {p.suggestedId ? (
-                  <span
-                    className={cn("font-medium", p.action === "remove" && "line-through")}
-                  >
-                    {p.suggestedName}
-                  </span>
-                ) : (
-                  <span className="font-mono text-muted-foreground">{p.freeText}</span>
-                )}
-              </span>
-              {p.comment && (
-                <span className="w-full text-xs text-muted-foreground">{p.comment}</span>
+        counters.map((p) => (
+          <li key={p.id} className="py-3">
+            <div className="flex flex-wrap items-center gap-3">
+            <Portrait id={p.lineId} name={p.lineName} size="sm" />
+            <span className="text-sm font-medium">{p.lineName}</span>
+            <span
+              className={cn(
+                "rounded-full px-2 py-0.5 text-xs",
+                p.action === "remove"
+                  ? "bg-destructive/15 text-destructive"
+                  : "bg-primary/15 text-primary"
               )}
-              <Actions
-                type="counter"
-                id={p.id}
-                busy={busy}
-                canApprove={!!p.suggestedId}
-                approveTitle={p.suggestedId ? undefined : (p.freeText ?? "")}
-                onReview={review}
-              />
-            </li>
-          ))}
-        </ul>
+            >
+              {p.action === "remove" ? t("admin.actionRemove") : t("admin.actionAdd")}
+            </span>
+            {p.suggestedId ? (
+              <>
+                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.75} />
+                <Portrait id={p.suggestedId} name={p.suggestedName ?? p.suggestedId} size="sm" />
+                <span className={cn("text-sm font-medium", p.action === "remove" && "line-through")}>
+                  {p.suggestedName}
+                </span>
+              </>
+            ) : (
+              <span className="font-mono text-sm text-muted-foreground">{p.freeText}</span>
+            )}
+            <EditLink id={p.lineId} />
+            <Actions
+              type="counter"
+              id={p.id}
+              busy={busy}
+              canApprove={!!p.suggestedId}
+              approveTitle={p.suggestedId ? undefined : (p.freeText ?? "")}
+              onReview={review}
+            />
+            </div>
+            {p.comment && (
+              <p className="mt-1.5 pl-[3.25rem] text-xs text-muted-foreground">{p.comment}</p>
+            )}
+          </li>
+        ))
       )}
 
       {section(
+        "stats",
         t("admin.statQueue"),
         statRows.length,
-        <ul className="space-y-2">
-          {statRows.map((s) => (
-            <li key={s.id} className="rounded-xl border border-border bg-card p-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <Portrait id={s.unitId} name={s.unitName} size="sm" />
-                <span className="text-sm font-medium">{s.unitName}</span>
-                <Actions type="stats" id={s.id} busy={busy} onReview={review} />
-              </div>
-              <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-1">
-                {s.changes.map(([label, from, to]) => (
-                  <li key={label} className="font-mono text-xs">
-                    <span className="text-muted-foreground">{label} </span>
-                    <span className="text-muted-foreground line-through">{from}</span>
-                    <span className="text-primary"> → {to}</span>
-                  </li>
-                ))}
-              </ul>
-              {s.comment && (
-                <p className="mt-2 text-xs text-muted-foreground">{s.comment}</p>
-              )}
-            </li>
-          ))}
-        </ul>
+        statRows.map((s) => (
+          <li key={s.id} className="py-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <Portrait id={s.unitId} name={s.unitName} size="sm" />
+              <span className="text-sm font-medium">{s.unitName}</span>
+              <EditLink id={s.lineId} />
+              <Actions type="stats" id={s.id} busy={busy} onReview={review} />
+            </div>
+            <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1 pl-[3.25rem]">
+              {s.changes.map(([label, from, to]) => (
+                <li key={label} className="font-mono text-xs tabular-nums">
+                  <span className="text-muted-foreground">{label} </span>
+                  <span className="text-muted-foreground line-through">{from}</span>
+                  <span className="text-primary"> → {to}</span>
+                </li>
+              ))}
+            </ul>
+            {s.comment && (
+              <p className="mt-2 pl-[3.25rem] text-xs text-muted-foreground">{s.comment}</p>
+            )}
+          </li>
+        ))
       )}
 
       {section(
+        "units",
         t("admin.unitQueue"),
         unitRows.length,
-        <ul className="space-y-2">
-          {unitRows.map((u) => (
-            <li key={u.id} className="rounded-xl border border-border bg-card p-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm font-medium">{u.name}</span>
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
-                  {t(`class.${u.unitClass}`)}
+        unitRows.map((u) => (
+          <li key={u.id} className="py-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-medium">{u.name}</span>
+              <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
+                {t(`class.${u.unitClass}`)}
+              </span>
+              {u.civ && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary py-0.5 pl-1 pr-2 text-xs text-secondary-foreground">
+                  <CivBadge civ={u.civ} size={14} />
+                  {u.civ}
                 </span>
-                {u.civ && (
-                  <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
-                    {u.civ}
-                  </span>
-                )}
-                {u.isUnique && (
-                  <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs text-primary">
-                    {t("unit.unique")}
-                  </span>
-                )}
+              )}
+              {u.isUnique && (
+                <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs text-primary">
+                  {t("unit.unique")}
+                </span>
+              )}
+              {created[`unit:${u.id}`] ? (
+                /* The moment the new line most needs an edit: both names are the same
+                   text and it has no stats. */
+                <EditLink id={created[`unit:${u.id}`]} label={t("admin.editCreated")} />
+              ) : (
                 <Actions type="unit" id={u.id} busy={busy} onReview={review} />
-              </div>
-              <p className="mt-2 font-mono text-xs text-muted-foreground">
-                {t("admin.unitSummary", {
-                  counters: u.counters.length,
-                  stats: u.statCount,
-                })}
-              </p>
-              {u.comment && <p className="mt-1 text-xs text-muted-foreground">{u.comment}</p>}
-            </li>
-          ))}
-        </ul>
+              )}
+            </div>
+            <p className="mt-1.5 font-mono text-xs tabular-nums text-muted-foreground">
+              {t("admin.unitSummary", { counters: u.counters.length, stats: u.statCount })}
+            </p>
+            {u.comment && <p className="mt-1 text-xs text-muted-foreground">{u.comment}</p>}
+          </li>
+        ))
       )}
 
       {section(
+        "reports",
         t("admin.reportQueue"),
         reportRows.length,
-        <ul className="space-y-2">
-          {reportRows.map((r) => (
-            <li key={r.id} className="rounded-xl border border-border bg-card p-3">
-              <div className="flex items-start gap-3">
-                <MessageSquareWarning
-                  className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
-                  strokeWidth={1.75}
-                />
-                {/* whitespace-pre-wrap: people write these with line breaks. */}
-                <p className="min-w-0 flex-1 whitespace-pre-wrap break-words text-sm">
-                  {r.message}
-                </p>
-                <Actions
-                  type="report"
-                  id={r.id}
-                  busy={busy}
-                  approveLabel={t("admin.resolve")}
-                  rejectLabel={t("admin.dismiss")}
-                  onReview={review}
-                />
-              </div>
-              {(r.page || r.locale) && (
-                <p className="mt-2 pl-7 font-mono text-[11px] text-muted-foreground">
-                  {[r.page, r.locale].filter(Boolean).join("  ")}
-                </p>
-              )}
-            </li>
-          ))}
-        </ul>
+        reportRows.map((r) => (
+          <li key={r.id} className="py-3">
+            <div className="flex items-start gap-3">
+              <MessageSquareWarning
+                className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+                strokeWidth={1.75}
+              />
+              {/* whitespace-pre-wrap: people write these with line breaks. */}
+              <p className="min-w-0 flex-1 whitespace-pre-wrap break-words text-sm">{r.message}</p>
+              <Actions
+                type="report"
+                id={r.id}
+                busy={busy}
+                approveLabel={t("admin.resolve")}
+                rejectLabel={t("admin.dismiss")}
+                onReview={review}
+              />
+            </div>
+            {(r.page || r.locale) && (
+              <p className="mt-1.5 pl-7 font-mono text-[11px] text-muted-foreground">
+                {[r.page, r.locale].filter(Boolean).join("  ")}
+              </p>
+            )}
+          </li>
+        ))
       )}
 
       {tallies.length > 0 && (
         <section>
-          <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-            {t("admin.votes")}
-          </h2>
-          <ul className="space-y-1.5">
+          <h2 className="mb-1 text-sm font-medium">{t("admin.votes")}</h2>
+          <ul className="divide-y divide-border border-t border-border">
             {tallies.map((v) => (
-              <li
-                key={v.lineId}
-                className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2 text-sm"
-              >
+              <li key={v.lineId} className="flex items-center gap-3 py-2 text-sm">
                 <Portrait id={v.lineId} name={v.lineName} size="sm" className="h-7 w-7" />
-                <span className="flex-1 truncate">{v.lineName}</span>
-                <span className="font-mono text-xs text-muted-foreground">
+                <span className="min-w-0 flex-1 truncate">{v.lineName}</span>
+                <span className="font-mono text-xs tabular-nums text-muted-foreground">
                   {v.accurate} {t("admin.accurate")} / {v.inaccurate} {t("admin.inaccurate")}
                 </span>
+                <EditLink id={v.lineId} />
               </li>
             ))}
           </ul>
         </section>
       )}
     </div>
+  );
+}
+
+/** Sews the two tabs together: from any queue row, jump to the full editor for that line. */
+function EditLink({ id, label }: { id: string; label?: string }) {
+  const t = useTranslations();
+  return (
+    <Link
+      href={`/admin/unit/${id}`}
+      className="rounded px-1.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {label ?? t("admin.edit")} →
+    </Link>
   );
 }
