@@ -21,6 +21,22 @@ export type UnitClass =
   | "Monk"
   | "Other";
 
+/**
+ * Fixed display order for classes. Counter lists group by it so the same page reads in
+ * the same order in every locale: sorting by translated name alone put Huskarl in one
+ * place in English and Huscarle in another in Spanish.
+ */
+export const CLASS_ORDER: readonly UnitClass[] = [
+  "Infantry",
+  "Archer",
+  "Cavalry",
+  "CavalryArcher",
+  "Siege",
+  "Naval",
+  "Monk",
+  "Other",
+];
+
 export type Stats = {
   hp: number | null;
   attack: number | null;

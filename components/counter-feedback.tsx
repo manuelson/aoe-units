@@ -97,7 +97,8 @@ export function CounterFeedback({
 
   async function submitSuggestion(e: React.FormEvent) {
     e.preventDefault();
-    if (picked.length === 0 && toRemove.length === 0 && !hasStatChanges) {
+    const note = comment.trim();
+    if (picked.length === 0 && toRemove.length === 0 && !hasStatChanges && note.length < 3) {
       setMessage(t("feedback.pickSomething"));
       return;
     }
@@ -117,6 +118,11 @@ export function CounterFeedback({
       }
       if (hasStatChanges && baseUnitId) {
         await send({ kind: "stats", unitId: baseUnitId, stats: statDiff, comment });
+      }
+      // Nothing structured to attach the note to, so it goes in as a site report:
+      // "this is wrong but I cannot express it with the checkboxes" is worth keeping.
+      if (picked.length === 0 && toRemove.length === 0 && !hasStatChanges) {
+        await send({ kind: "report", message: note, page: window.location.pathname });
       }
       setMessage(t("feedback.sent"));
       setState("done");

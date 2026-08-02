@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft, ShieldAlert, Swords } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShieldAlert, Swords } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { getLine, getLineIds, getLines, getStatMaxima } from "@/lib/queries";
@@ -156,13 +156,28 @@ export default async function UnitPage({ params }: PageProps) {
             <h2 className="mb-3 text-sm font-medium text-muted-foreground">
               {t("unit.line")}
             </h2>
-            <ol className="flex flex-wrap items-center gap-2">
+            {/* Each tier has its own art, so show it: the old pills gave it 28px and
+                leaned on the name, which is the part you already know. */}
+            <ol className="flex flex-wrap items-start gap-x-3 gap-y-4">
               {line.units.map((u, i) => (
-                <li key={u.id} className="flex items-center gap-2">
-                  {i > 0 && <span className="text-muted-foreground">→</span>}
-                  <span className="flex items-center gap-2 rounded-full border border-border bg-card py-1.5 pl-1.5 pr-3.5 text-sm">
-                    <Portrait id={u.id} name={u.name} size="sm" className="h-7 w-7" />
-                    {u.name}
+                <li key={u.id} className="flex items-start gap-3">
+                  {i > 0 && (
+                    <ArrowRight
+                      className="mt-5 h-4 w-4 shrink-0 text-primary sm:mt-6"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                  )}
+                  <span className="block w-18 text-center sm:w-24">
+                    <Portrait
+                      id={u.id}
+                      name={u.name}
+                      size="lg"
+                      className="mx-auto h-14 w-14 sm:h-16 sm:w-16"
+                    />
+                    <span className="mt-1.5 block text-[11px] leading-tight text-muted-foreground">
+                      {u.name}
+                    </span>
                   </span>
                 </li>
               ))}

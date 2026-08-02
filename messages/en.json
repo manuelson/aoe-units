@@ -118,7 +118,7 @@
     "sent": "Suggestion sent. It will show up once reviewed.",
     "statsTitle": "Wrong stats?",
     "statsHelp": "Edit only the numbers that are off. Anything you leave alone stays as it is.",
-    "pickSomething": "Add a counter, remove one, or change a stat.",
+    "pickSomething": "Add a counter, remove one, change a stat, or leave a note.",
     "removeTitle": "Something here that does not belong?",
     "removeHelp": "Tick anything listed that does not actually beat this unit."
   },

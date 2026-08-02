@@ -13,12 +13,15 @@ export const STAT_FIELDS = [
   { name: "speed", key: "speed", min: 0, max: 5, step: 0.05 },
 ] as const;
 
-/** `icon` names a lucide export; resolved in unit-stats.tsx so this file stays UI-free. */
+/**
+ * `img` is a file in public/icons: the game's own resource icons, which players already
+ * read at a glance. Resolved to a path in unit-stats.tsx so this file stays UI-free.
+ */
 export const COST_FIELDS = [
-  { name: "Food", key: "food", icon: "Wheat" },
-  { name: "Wood", key: "wood", icon: "TreePine" },
-  { name: "Gold", key: "gold", icon: "Coins" },
-  { name: "Stone", key: "stone", icon: "Gem" },
+  { name: "Food", key: "food", img: "aoe_food" },
+  { name: "Wood", key: "wood", img: "aoe_wood" },
+  { name: "Gold", key: "gold", img: "aoe_gold" },
+  { name: "Stone", key: "stone", img: "aoe_stone" },
 ] as const;
 
 export type StatFieldName = (typeof STAT_FIELDS)[number]["name"];

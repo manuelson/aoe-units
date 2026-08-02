@@ -1,9 +1,7 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
-import { Wheat, TreePine, Coins, Gem } from "lucide-react";
 import { STAT_FIELDS, COST_FIELDS } from "@/lib/stats-fields";
 import type { Stats, StatMaxima } from "@/lib/queries";
-
-const COST_ICONS = { Wheat, TreePine, Coins, Gem } as const;
 
 /**
  * One meter per stat rather than a bare number grid. A raw "160 HP" is unreadable
@@ -35,10 +33,9 @@ export async function UnitStats({
   const cost = COST_FIELDS.map((c) => ({
     label: t(`unit.${c.key}`),
     value: stats.cost?.[c.name],
-    Icon: COST_ICONS[c.icon],
+    img: c.img,
   })).filter(
-    (c): c is { label: string; value: number; Icon: (typeof COST_ICONS)[keyof typeof COST_ICONS] } =>
-      typeof c.value === "number" && c.value > 0
+    (c): c is typeof c & { value: number } => typeof c.value === "number" && c.value > 0
   );
 
   if (rows.length === 0 && cost.length === 0) return null;
@@ -46,16 +43,18 @@ export async function UnitStats({
   return (
     <div className="space-y-6">
       {rows.length > 0 && (
-        <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+        // The value leads. Label and game-wide limit are the frame around it, not its equals:
+        // "60" is what you came for, "PV" and "/ 600" are how to read it.
+        <dl className="grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
           {rows.map((r) => (
             <div key={r.label}>
-              <div className="flex items-baseline justify-between gap-3">
-                <dt className="text-sm text-muted-foreground">{r.label}</dt>
-                <dd className="font-mono text-sm tabular-nums">
-                  {r.value}
-                  <span className="text-muted-foreground"> / {r.max}</span>
-                </dd>
-              </div>
+              <dt className="text-xs text-muted-foreground">{r.label}</dt>
+              <dd className="mt-0.5 flex items-baseline gap-1.5">
+                <span className="font-mono text-2xl leading-none tabular-nums">{r.value}</span>
+                <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+                  / {r.max}
+                </span>
+              </dd>
               {/* Track is a lighter step of the fill's own hue, so the pair reads as
                   one scale. role=img keeps it out of the a11y tree as decoration:
                   the dt/dd above already state the value. */}
@@ -76,23 +75,23 @@ export async function UnitStats({
 
       {cost.length > 0 && (
         <div className="border-t border-border pt-5">
-          <p className="mb-2 text-xs text-muted-foreground">{t("unit.cost")}</p>
-          {/* A handful of headline numbers is a stat row, not a chart. The icon is
-              paired with its label, so identity never rests on the glyph alone. */}
-          <dl className="flex flex-wrap gap-2.5">
-            {cost.map(({ label, value, Icon }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2"
-              >
-                <Icon
-                  className="h-4 w-4 shrink-0 text-chart-fill"
-                  strokeWidth={1.75}
-                  aria-hidden
+          <p className="mb-3 text-xs text-muted-foreground">{t("unit.cost")}</p>
+          {/* A handful of headline numbers is a stat row, not a chart. No boxes: this
+              block already sits inside a card, and a card inside a card frames nothing.
+              The icon is paired with its label, so identity never rests on the glyph. */}
+          <dl className="flex flex-wrap gap-x-8 gap-y-4">
+            {cost.map(({ label, value, img }) => (
+              <div key={label} className="flex items-center gap-2.5">
+                <Image
+                  src={`/icons/${img}.webp`}
+                  alt=""
+                  width={66}
+                  height={66}
+                  className="h-7 w-7 shrink-0"
                 />
                 <div>
                   <dt className="text-[11px] leading-none text-muted-foreground">{label}</dt>
-                  <dd className="mt-1 font-mono text-base leading-none">{value}</dd>
+                  <dd className="mt-1 font-mono text-xl leading-none tabular-nums">{value}</dd>
                 </div>
               </div>
             ))}

@@ -8,19 +8,8 @@ import { Link } from "@/i18n/navigation";
 import { Portrait } from "@/components/portrait";
 import { CivBadge } from "@/components/civ-badge";
 import { rank } from "@/lib/search/rank";
-import type { LineSummary, UnitClass } from "@/lib/queries";
+import { CLASS_ORDER, type LineSummary, type UnitClass } from "@/lib/queries";
 import { cn } from "@/lib/utils";
-
-const CLASSES: UnitClass[] = [
-  "Infantry",
-  "Archer",
-  "Cavalry",
-  "CavalryArcher",
-  "Siege",
-  "Naval",
-  "Monk",
-  "Other",
-];
 
 export function UnitGrid({
   lines,
@@ -92,7 +81,7 @@ export function UnitGrid({
             >
               {t("browse.all")}
             </button>
-            {CLASSES.map((c) => (
+            {CLASS_ORDER.map((c) => (
               <button
                 key={c}
                 type="button"

@@ -118,7 +118,7 @@
     "sent": "Sugerencia enviada. Aparecerá cuando se revise.",
     "statsTitle": "¿Hay stats mal?",
     "statsHelp": "Cambia solo los números que estén mal. Lo que no toques se queda igual.",
-    "pickSomething": "Añade un counter, quita uno, o cambia alguna estadística.",
+    "pickSomething": "Añade un counter, quita uno, cambia una estadística o deja una nota.",
     "removeTitle": "¿Sobra algo de lo que hay?",
     "removeHelp": "Marca las que están listadas pero en realidad no le ganan."
   },

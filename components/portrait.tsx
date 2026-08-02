@@ -54,11 +54,14 @@ export function Portrait({
         "portrait-plate relative inline-flex shrink-0 items-center justify-center",
         "overflow-hidden rounded-lg ring-1 ring-border",
         cls,
-        className
+        className,
       )}
     >
       {broken ? (
-        <span className="font-mono font-semibold tracking-tight text-primary" aria-hidden>
+        <span
+          className="font-mono font-semibold tracking-tight text-primary"
+          aria-hidden
+        >
           {monogram(name)}
         </span>
       ) : (
