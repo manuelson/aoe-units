@@ -48,7 +48,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           description: t("seo.homeDescription"),
         }}
       />
-      <SiteHeader />
+      <SiteHeader lines={lines} />
       <main>
         <Hero lines={lines} counterCount={counterCount} />
         <CivShowcase lines={lines} />

@@ -19,9 +19,13 @@ import { cn } from "@/lib/utils";
 export function CommandSearch({
   lines,
   variant = "inline",
+  /** Replaces the trigger's placeholder, e.g. the unit you are currently reading.
+   *  The dialog's own input keeps the generic prompt: that one is empty and typed into. */
+  label,
 }: {
   lines: LineSummary[];
   variant?: "inline" | "compact";
+  label?: string;
 }) {
   const t = useTranslations();
   const router = useRouter();
@@ -88,17 +92,29 @@ export function CommandSearch({
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "group flex w-full items-center gap-3 rounded-xl border border-border bg-card",
+          "group flex items-center gap-3 rounded-xl border border-border bg-card",
           "text-left text-muted-foreground transition-colors hover:border-primary/50",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.995]",
-          variant === "inline" ? "px-4 py-4 text-base sm:text-lg" : "px-3 py-2 text-sm"
+          variant === "inline"
+            ? "w-full px-4 py-4 text-base sm:text-lg"
+            : // A full input plus the logo plus both toggles does not fit a phone bar, so
+              // the compact trigger collapses to its icon and expands from sm up.
+              "h-9 w-9 justify-center px-0 text-sm sm:w-full sm:justify-start sm:px-3"
         )}
       >
         <Search
-          className={variant === "inline" ? "h-5 w-5" : "h-4 w-4"}
+          className={variant === "inline" ? "h-5 w-5" : "h-4 w-4 shrink-0"}
           strokeWidth={1.75}
         />
-        <span className="flex-1 truncate">{t("searchPlaceholder")}</span>
+        <span
+          className={cn(
+            "flex-1 truncate",
+            variant === "compact" && "hidden sm:block",
+            label && "text-foreground"
+          )}
+        >
+          {label ?? t("searchPlaceholder")}
+        </span>
         <kbd
           className={cn(
             "hidden shrink-0 rounded border border-border bg-muted px-1.5 py-0.5",
