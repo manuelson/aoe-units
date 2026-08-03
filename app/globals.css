@@ -97,6 +97,37 @@
 }
 
 @layer utilities {
+  /*
+    The home CTA docks to the bottom of the viewport while the page scrolls and settles
+    into flow above the footer. Sticky does the docking; the scroll timeline only fades it
+    in past the fold. Browsers without scroll-driven animations just show it docked.
+  */
+  .cta-dock {
+    position: sticky;
+    bottom: 0;
+  }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .cta-dock {
+        animation: cta-dock-in linear both;
+        animation-timeline: scroll();
+        animation-range: 320px 560px;
+      }
+    }
+  }
+  @keyframes cta-dock-in {
+    from {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(0.75rem);
+    }
+    to {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+  }
+
   /* Unit portraits are dark-background sprites; the plate keeps them legible in light mode. */
   .portrait-plate {
     background-image: radial-gradient(
